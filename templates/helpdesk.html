@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="helpdesk-container">
+    <h2>Helpdesk</h2>
+    <p>If you are unable to retrieve your password, please contact our support team:</p>
+    <ul>
+        <li>Email: support@jecrc.edu</li>
+        <li>Phone: +91-9876543210</li>
+        <li>Visit: Admin Office, JECRC Campus</li>
+    </ul>
+    <a href="{{ url_for('login') }}">Back to Login</a>
+</div>
+{% endblock %}

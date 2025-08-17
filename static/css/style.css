@@ -1,0 +1,1151 @@
+/* 
+   JECRC Problem Statement — Final Styling
+    */
+
+/* CSS Variables (theme) */
+:root{
+  --bg-grad: radial-gradient(1200px 800px at 10% -10%, #1e88e5 0%, transparent 40%),
+             radial-gradient(1000px 800px at 110% 10%, #9c27b0 0%, transparent 45%),
+             linear-gradient(180deg, #0b1220 0%, #0e1626 100%);
+  --card-bg: rgba(255,255,255,.07);
+  --card-stroke: rgba(255,255,255,.18);
+  --glass: rgba(255,255,255,.08);
+  --text: #e9eef7;
+  --muted: #b9c2d0;
+  --accent: #1a73e8;
+  --accent-2: #7c4dff;
+  --ok: #00c853;
+  --warn: #ffab00;
+  --err: #ff5252;
+  --shadow-1: 0 10px 30px rgba(0,0,0,.35);
+  --shadow-2: 0 20px 60px rgba(0,0,0,.45);
+  --radius-xl: 18px;
+  --radius-2xl: 26px;
+}
+
+/* Base */
+*{ box-sizing:border-box }
+html,body{
+  height:100%;
+  margin:0;
+  padding:0;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+  color:var(--text);
+  background: var(--bg-grad);
+  background-attachment: fixed;
+  line-height:1.5;
+}
+
+a{ color:var(--accent); text-decoration:none }
+a:hover{ text-decoration:underline }
+
+img{ max-width:100%; display:block }
+
+main{
+  width:min(1200px, 92vw);
+  margin: 24px auto 80px;
+}
+
+/* Header */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: saturate(180%) blur(14px);
+
+  background:
+    linear-gradient(180deg, rgba(224, 225, 227, 0.75), rgba(8, 12, 24, 0.35)),
+    url("jecrc_logo1.jpg"); /* image above gradient */
+  
+  background-repeat: no-repeat;
+  background-position: left center; /* move image to left */
+  background-size: 150px auto; /* control image size */
+
+  border-bottom: 1px solid var(--card-stroke);
+  box-shadow: var(--shadow-1);
+}
+
+header > h1{
+  margin:0; padding:20px 24px 8px;
+  text-align:center;
+  letter-spacing:.6px;
+  font-weight:800;
+  background:linear-gradient(90deg, #e3f2fd, #e1bee7 60%, #bbdefb 100%);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  text-shadow: 0 2px 24px rgba(124,77,255,.25);
+}
+header nav{
+  display:flex; justify-content:center; gap:18px; padding:10px 0 16px 0;
+  flex-wrap:wrap;
+}
+header nav a{
+  padding:10px 14px;
+  border-radius:12px;
+  background:var(--glass);
+  border:1px solid var(--card-stroke);
+  transition: transform .15s ease, box-shadow .2s ease, background .2s ease;
+  text-decoration:none;
+}
+header nav a:hover{
+  transform:translateY(-2px);
+  box-shadow:0 8px 20px rgba(26,115,232,.25);
+  background:rgba(255,255,255,.12);
+}
+/* Animation for login panel */
+.animated-login {
+    animation: slideFade 1s ease forwards;
+    opacity: 0;
+    transform: translateY(-50px);
+}
+
+@keyframes slideFade {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Footer */
+footer{
+  width:min(1200px, 92vw);
+  margin: 18px auto 40px;
+  padding:16px 18px;
+  border:1px solid var(--card-stroke);
+  border-radius:14px;
+  background:linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+  backdrop-filter: blur(8px);
+  color:var(--muted);
+  text-align:center;
+}
+
+/* Flash messages */
+.flashes{ list-style:none; padding:0; margin: 18px 0 }
+.flashes li{
+  padding:12px 14px; margin:8px 0;
+  border-radius:12px; border:1px solid var(--card-stroke);
+  background:var(--glass); backdrop-filter: blur(8px);
+}
+.flash-success{ border-left:4px solid var(--ok) }
+.flash-info{ border-left:4px solid var(--accent) }
+.flash-warning{ border-left:4px solid var(--warn) }
+.flash-danger{ border-left:4px solid var(--err) }
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 70vh;
+}
+
+.login-form {
+    background: #e8dfdff9 url("jecrc_logo.png") no-repeat top center;
+    background-size: 80px auto; /* Adjust size of the image */
+    padding: 80px 40px 30px; /* Extra top padding for image space */
+    border-radius: 15px;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+
+.login-form h2 {
+    margin-bottom: 20px;
+    font-size: 26px;
+    color: #333;
+    font-weight: bold;
+}
+
+.login-form label {
+    display: block;
+    text-align: left;
+    margin-top: 15px;
+    font-weight: 600;
+    color: #444;
+}
+
+.login-form input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    font-size: 15px;
+    outline: #0e1626;
+    transition: all 0.3s ease;
+}
+
+.login-form input:focus {
+    border-color: #4CAF50;
+    box-shadow: 0px 0px 8px rgba(76, 175, 80, 0.4);
+}
+
+/* 🚀 3D Login Button */
+.login-form button {
+    margin-top: 20px;
+    padding: 12px;
+    width: 25%;
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+    background: linear-gradient(145deg, #4CAF50, #2e7d32);
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0px 6px 0px #1b5e20;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.login-form button:hover {
+    background: linear-gradient(145deg, #43a047, #2e7d32);
+}
+
+.login-form button:active {
+    transform: translateY(4px);
+    box-shadow: 0px 2px 0px #1b5e20;
+}
+
+/* Forget password link */
+.login-form p {
+    margin-top: 15px;
+}
+
+.login-form a {
+    text-decoration: none;
+    color: #1976d2;
+    font-weight: bold;
+}
+
+.login-form a:hover {
+    text-decoration: underline;
+}
+.flash-messages {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+}
+
+.flash {
+    padding: 15px 20px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    font-weight: bold;
+    animation: fadeIn 0.5s ease-in-out;
+    box-shadow: 0 4px 12px rgba(248, 247, 247, 0.2);
+    color: #fff;
+    min-width: 250px;
+    position: relative;
+}
+
+/* Different colors */
+.flash-success { background-color: #28a745; }
+.flash-danger { background-color: #dc3545; }
+.flash-info { background-color: #007bff; }
+.flash-warning { background-color: #ffc107; color: #000; }
+
+/* Close button */
+.close-btn {
+    position: absolute;
+    right: 12px;
+    top: 6px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+/* Fade animation */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 3D Button (Apply, Login, etc.) */
+.btn-3d {
+    display: inline-block;
+    padding: 12px 25px;
+    margin-top: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    background: linear-gradient(145deg, #007bff, #0056b3);
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    box-shadow: 0 6px #004080;
+    transition: all 0.2s ease-in-out;
+}
+
+.btn-3d:hover {
+    background: linear-gradient(145deg, #0056b3, #004080);
+}
+
+.btn-3d:active {
+    transform: translateY(4px);
+    box-shadow: 0 2px #00264d;
+}
+
+
+.login-form p{
+  margin:12px 0 0;
+}
+.login-form p a{ color: var(--accent-2) }
+
+@keyframes floatIn{
+  from{ opacity:0; transform: translateY(12px) scale(.98) }
+  to{ opacity:1; transform: translateY(0) scale(1) }
+}
+
+/* ---------- FILTER BAR + GRID (HOME) ---------- */
+.problems-container h2{
+  margin: 14px 0 18px;
+  font-size: clamp(20px, 3vw, 26px);
+  font-weight:800;
+}
+
+.filter-bar{
+  display:flex; gap:12px; flex-wrap:wrap; align-items:center; justify-content:center;
+  margin: 14px 0 22px;
+}
+.filter-bar input,
+.filter-bar select{
+  padding:12px 14px; font-size:1rem;
+  color:var(--text);
+  background: rgba(255,255,255,.06);
+  border:1px solid var(--card-stroke);
+  border-radius:12px; outline:none;
+  transition: box-shadow .2s ease, background .2s ease;
+}
+.filter-bar input::placeholder{ color:#ced6e4aa }
+.filter-bar input:focus, .filter-bar select:focus{
+  box-shadow:0 0 0 4px rgba(124,77,255,.25);
+  background: rgba(255,255,255,.1);
+}
+
+.problems-grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap:18px;
+}
+
+.problem-card{
+  position:relative;
+  padding:18px 16px 16px;
+  border-radius: var(--radius-xl);
+  border:1px solid var(--card-stroke);
+  background:
+    radial-gradient(180px 140px at 90% -10%, rgba(124,77,255,.14), transparent 60%),
+    radial-gradient(220px 180px at -10% 110%, rgba(26,115,232,.14), transparent 60%),
+    var(--card-bg);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-1);
+  overflow:hidden;
+  transition: transform .15s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.problem-card::after{
+  content:"";
+  position:absolute; inset:-1px;
+  border-radius: inherit;
+  pointer-events:none;
+  background: linear-gradient(120deg, rgba(26,115,232,.35), rgba(124,77,255,.3), transparent 60%);
+  opacity:.15;
+}
+.problem-card:hover{
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(0,0,0,.45);
+  border-color: rgba(124,77,255,.4);
+}
+.problem-card h3{
+  margin:4px 0 8px;
+  font-size:1.05rem; font-weight:700;
+}
+.problem-card .description{
+  margin:0 0 10px; color:var(--muted); font-size:.97rem;
+}
+.problem-card .details{
+  margin:0 0 14px; padding:0; list-style:none; color:#d7def0; font-size:.93rem;
+  display:grid; gap:6px;
+}
+.apply-btn{
+  display:inline-flex; align-items:center; justify-content:center;
+  padding:10px 14px; border-radius:12px; text-decoration:none;
+  background: linear-gradient(180deg, #00d46a, #00c853);
+  color:#05220f; font-weight:700;
+  box-shadow: 0 10px 24px rgba(0,200,83,.35);
+  transition: transform .12s ease, box-shadow .2s ease, filter .2s ease;
+}
+.apply-btn:hover{ transform:translateY(-2px); box-shadow:0 16px 32px rgba(0,200,83,.45) }
+.apply-btn:active{ transform:translateY(0); filter:brightness(.98) }
+
+/*problem details */
+.problem-detail {
+    background: linear-gradient(135deg, #f9f9f9, #eef3ff);
+    border-radius: 16px;
+    padding: 40px;
+    margin: 40px auto;
+    max-width: 800px;
+    box-shadow: 0 12px 24px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.problem-detail:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 16px 32px rgba(0,0,0,0.25);
+}
+
+.problem-detail h2 {
+    font-size: 2em;
+    margin-bottom: 20px;
+    color: #2c3e50;
+    text-align: center;
+}
+
+.problem-detail p {
+    margin: 15px 0;
+    font-size: 1.15em;
+    line-height: 1.6;
+    color: #333;
+}
+
+.problem-detail strong {
+    color: #34495e;
+}
+
+.problem-detail a {
+    color: #0056d6;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.problem-detail a:hover {
+    text-decoration: underline;
+}
+
+
+/* ---------- GENERIC FORM PAGES (forget/change/helpdesk) ---------- */
+.form-wrap{
+  width:min(680px, 92vw);
+  margin: 28px auto;
+  padding: 22px 20px;
+  border:1px solid var(--card-stroke);
+  border-radius: var(--radius-2xl);
+  background: rgba(255,255,255,.05);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-1);
+}
+.form-wrap h2{ margin: 4px 0 14px }
+.form-grid{
+  display:grid; gap:12px; grid-template-columns:1fr 1fr;
+}
+.form-grid .full{ grid-column: 1 / -1 }
+.form-wrap label{ color:var(--muted) }
+.form-wrap input, .form-wrap textarea, .form-wrap select{
+  width:100%; padding:12px 14px;
+  color:var(--text); background: rgba(255,255,255,.06);
+  border:1px solid var(--card-stroke); border-radius:12px; outline:none;
+}
+.form-wrap textarea{ min-height:120px; resize:vertical }
+.form-actions{ display:flex; gap:12px; justify-content:flex-end; margin-top:10px }
+
+/* ---------- Small utilities ---------- */
+.center{text-align:center}
+.hidden{ display:none !important }
+
+/* ---------- Responsive tweaks ---------- */
+@media (max-width:720px){
+  header nav{ gap:10px }
+  .form-grid{ grid-template-columns:1fr }
+}
+
+/* ---------- Subtle animated background shapes (optional) ---------- */
+body::before, body::after{
+  content:""; position:fixed; z-index:-1; pointer-events:none;
+  width:40vmax; height:40vmax; border-radius:50%;
+  filter: blur(70px);
+  opacity:.15; mix-blend-mode: screen;
+  animation: drift 24s ease-in-out infinite alternate;
+}
+body::before{ top:-10vmax; left:-8vmax; background:#1a73e8 }
+body::after{ bottom:-12vmax; right:-10vmax; background:#7c4dff; animation-delay: 8s }
+
+@keyframes drift{
+  from{ transform: translate(0,0) rotate(0) scale(1) }
+  to{ transform: translate(4vmax, -3vmax) rotate(8deg) scale(1.05) }
+}
+/*for admin login */
+/* Login Container */
+.login2-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 70vh;
+}
+
+/* Login Form */
+.login2-form {
+    background: #e8dfdf url("jecrc_logo.png") no-repeat top center;
+    background-size: 80px auto; /* Adjust size of the image */
+    padding: 100px 40px 30px; /* Extra top padding for image space */
+    border-radius: 15px;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+/* Login Title */
+.login2-form h2 {
+    margin-bottom: 20px;
+    font-size: 26px;
+    color: rgba(242, 242, 246, 0.91);
+    font-weight: bold;
+}
+
+/* Labels */
+.login2-form label {
+    display: block;
+    text-align: left;
+    margin-top: 15px;
+    font-weight: 600;
+    color: #444;
+}
+
+/* Input Fields */
+.login2-form input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    font-size: 15px;
+    outline: #0e1626;
+    transition: all 0.3s ease;
+}
+
+.login2-form input:focus {
+    border-color: #4CAF50;
+    box-shadow: 0px 0px 8px rgba(76, 175, 80, 0.4);
+}
+
+/* 🚀 3D Login Button */
+.login2-form button {
+    margin-top: 20px;
+    padding: 12px;
+    width: 25%;
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+    background: linear-gradient(145deg, #4CAF50, #2e7d32);
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0px 6px 0px #1b5e20;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.login2-form button:hover {
+    background: linear-gradient(145deg, #43a047, #2e7d32);
+}
+
+.login2-form button:active {
+    transform: translateY(4px);
+    box-shadow: 0px 2px 0px #1b5e20;
+}
+/* Change paswword Container */
+.change-password-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 70vh;
+}
+
+/* Login Form */
+.change-password-form {
+    background: #e8dfdf url("jecrc_logo.png") no-repeat top center;
+    background-size: 80px auto; /* Adjust size of the image */
+    padding: 100px 40px 30px; /* Extra top padding for image space */
+    border-radius: 15px;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+/* Login Title */
+.change-password-form h2 {
+    margin-bottom: 20px;
+    font-size: 26px;
+    color: rgba(242, 242, 246, 0.91);
+    font-weight: bold;
+}
+
+/* Labels */
+.change-password-form label {
+    display: block;
+    text-align: left;
+    margin-top: 15px;
+    font-weight: 600;
+    color: #444;
+}
+
+/* Input Fields */
+.change-password-form input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    font-size: 15px;
+    outline: #0e1626;
+    transition: all 0.3s ease;
+}
+
+.change-password-form input:focus {
+    border-color: #4CAF50;
+    box-shadow: 0px 0px 8px rgba(76, 175, 80, 0.4);
+}
+
+/* 🚀 3D Login Button */
+.change-password-form button {
+    margin-top: 20px;
+    padding: 12px;
+    width: 30%;
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+    background: linear-gradient(145deg, #4CAF50, #2e7d32);
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0px 6px 0px #1b5e20;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.change-password-form button:hover {
+    background: linear-gradient(145deg, #43a047, #2e7d32);
+}
+
+.change-password-form button:active {
+    transform: translateY(4px);
+    box-shadow: 0px 2px 0px #1b5e20;
+}
+/* Change student password */
+.dashboard-box-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 70vh;
+}
+
+/* Login Form */
+.dashboard-box-form {
+    background: #e8dfdf url("jecrc_logo.png") no-repeat top center;
+    background-size: 80px auto; /* Adjust size of the image */
+    padding: 100px 40px 30px; /* Extra top padding for image space */
+    border-radius: 15px;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+/* Login Title */
+.dashboard-box-form h2 {
+    margin-bottom: 20px;
+    font-size: 26px;
+    color: rgba(242, 242, 246, 0.91);
+    font-weight: bold;
+}
+
+/* Labels */
+.dashboard-box-form label {
+    display: block;
+    text-align: left;
+    margin-top: 15px;
+    font-weight: 600;
+    color: #444;
+}
+
+/* Input Fields */
+.dashboard-box-form input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    font-size: 15px;
+    outline: #0e1626;
+    transition: all 0.3s ease;
+}
+
+.dashboard-box-form input:focus {
+    border-color: #4CAF50;
+    box-shadow: 0px 0px 8px rgba(76, 175, 80, 0.4);
+}
+
+/* 🚀 3D Login Button */
+.dashboard-box-form button {
+    margin-top: 20px;
+    padding: 12px;
+    width: 25%;
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+    background: linear-gradient(145deg, #4CAF50, #2e7d32);
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0px 6px 0px #1b5e20;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.dashboard-box-form button:hover {
+    background: linear-gradient(145deg, #43a047, #2e7d32);
+}
+
+.dashboard-box-form button:active {
+    transform: translateY(4px);
+    box-shadow: 0px 2px 0px #1b5e20;
+}
+/* chnage Student Password */
+.change-student-password-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 70vh;
+}
+
+/* Login Form */
+.change-student-password-form {
+    background: #e8dfdf url("jecrc_logo.png") no-repeat top center;
+    background-size: 80px auto; /* Adjust size of the image */
+    padding: 100px 40px 30px; /* Extra top padding for image space */
+    border-radius: 15px;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+/* Login Title */
+.change-student-password-form h2 {
+    margin-bottom: 20px;
+    font-size: 26px;
+    color: rgba(242, 242, 246, 0.91);
+    font-weight: bold;
+}
+
+/* Labels */
+.change-student-password-form label {
+    display: block;
+    text-align: left;
+    margin-top: 15px;
+    font-weight: 600;
+    color: #444;
+}
+
+/* Input Fields */
+.change-student-password-form input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 5px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    font-size: 15px;
+    outline: #0e1626;
+    transition: all 0.3s ease;
+}
+
+.change-student-password-form input:focus {
+    border-color: #4CAF50;
+    box-shadow: 0px 0px 8px rgba(76, 175, 80, 0.4);
+}
+
+/* 🚀 3D Login Button */
+.change-student-password-form button {
+    margin-top: 20px;
+    padding: 12px;
+    width: 10%;
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+    background: linear-gradient(145deg, #4CAF50, #2e7d32);
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0px 6px 0px #1b5e20;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.change-student-password-form button:hover {
+    background: linear-gradient(145deg, #43a047, #2e7d32);
+}
+
+.change-student-password-form button:active {
+    transform: translateY(4px);
+    box-shadow: 0px 2px 0px #1b5e20;
+}
+
+/* problem data table */
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+    background-color: #1e1e2f2d; /* Dark background for full table */
+    color: #fff; /* White text */
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.styled-table thead tr {
+    background: #007bff; /* Blue header */
+    color: #fff;
+    text-align: left;
+    font-weight: bold;
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 12px 15px;
+    border: 1px solid #444; /* Dark border to match background */
+}
+
+.styled-table tbody tr {
+    background-color: #2c2c3e; /* Dark gray for rows */
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #3a3a52; /* Slightly lighter gray */
+}
+
+.styled-table tbody tr:hover {
+    background-color: #505072; /* Highlight row on hover */
+    transition: background 0.3s ease;
+}
+
+/* admin add student */
+/* === Problem Management Table (All White Text) === */
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: #1e2738;   /* Dark panel background */
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+    color: #ffffff;        /* Default text color (white) */
+    font-size: 15px;
+}
+
+/* Table headers */
+.styled-table th {
+    background: linear-gradient(90deg, #007bff, #6f42c1);
+    color: #ffffff;
+    font-weight: 600;
+    padding: 12px;
+    text-align: center;
+    letter-spacing: 0.5px;
+    font-size: 14px;
+}
+
+/* Table cells */
+.styled-table td {
+    border: 1px solid #2c3e50;
+    padding: 12px;
+    text-align: center;
+    color: #ffffff !important;   /* Force all cell text white */
+    vertical-align: middle;
+}
+
+/* Problem titles stronger */
+.styled-table td strong {
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+/* Metadata text (roll no, batch, etc.) */
+.styled-table td small {
+    color: #ffffff !important;
+    font-size: 13px;
+}
+
+/* Skill & Category columns (force white) */
+.styled-table td:nth-child(3),
+.styled-table td:nth-child(4) {
+    color: #ffffff !important;
+    font-weight: 500;
+}
+
+/* Links */
+.styled-table td a {
+    color: #ffffff !important;   /* White links */
+    text-decoration: underline;
+    font-weight: 500;
+}
+.styled-table td a:hover {
+    opacity: 0.8;          /* Subtle hover effect */
+}
+
+/* Alternating row background */
+.styled-table tr:nth-child(even) {
+    background: #252f44;
+}
+
+/* Row hover effect */
+.styled-table tr:hover {
+    background: #2f3d5c;
+    transition: 0.2s ease-in-out;
+}
+
+
+/* add problem desgine */
+/* Page background */
+body {
+  background: linear-gradient(135deg, #0a0f1e, #1b2236);
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+/* Card style (dark mode) */
+.card {
+  background: #151a2e;
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+  margin-bottom: 30px;
+  color: #ffffff;
+}
+
+/* Section titles */
+.card h2, .card h3 {
+  margin-bottom: 15px;
+  color: #4a8dff; /* Accent blue */
+  font-size: 20px;
+  font-weight: 600;
+}
+
+/* Form layout */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: block;
+  color: #ddd;
+}
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #444;
+  border-radius: 8px;
+  font-size: 14px;
+  background: #0f1324;
+  color: #fff;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: #4a8dff;
+  outline: none;
+  box-shadow: 0 0 6px #4a8dff88;
+}
+.form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* Gradient button */
+.btn {
+  background: linear-gradient(90deg, #0077ff, #5c2eff);
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+.btn:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+/* Small buttons (table actions) */
+.btn-small {
+  background: #5c2eff;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.btn-small:hover {
+  background: #3d1fbf;
+}
+
+/* Table */
+.styled-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  font-size: 14px;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.styled-table th {
+  background: linear-gradient(90deg, #0077ff, #5c2eff);
+  color: white;
+  padding: 12px;
+  text-align: left;
+}
+.styled-table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #333;
+  color: #ffffff;
+}
+.styled-table tr:nth-child(even) {
+  background: #1e2438;
+}
+.styled-table tr:nth-child(odd) {
+  background: #151a2e;
+}
+.styled-table tr:hover {
+  background: #2a3354;
+}
+
+/*----adim add student----*/
+/* === Dashboard Box === */
+.dashboard-box {
+    background: rgba(30, 39, 56, 0.9);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+    margin: 20px auto;
+    color: #ffffff; /* White text */
+}
+
+/* Section Titles */
+.dashboard-box h2, 
+.dashboard-box h3 {
+    color: #ffffff;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+/* === Form Styling === */
+.form-container {
+    background: rgba(40, 50, 70, 0.85);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    box-shadow: inset 0 1px 4px rgba(255,255,255,0.1);
+}
+
+.form-container label {
+    display: block;
+    margin: 10px 0 5px;
+    color: #ffffff;
+    font-weight: 500;
+}
+
+.form-container input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #444;
+    background: #2b2f3c;
+    color: #ffffff;
+    margin-bottom: 15px;
+}
+
+.form-container input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Buttons */
+.btn-3d {
+    display: inline-block;
+    padding: 8px 14px;
+    border-radius: 6px;
+    background: linear-gradient(90deg, #007bff, #6f42c1);
+    color: #fff;
+    font-weight: 500;
+    text-decoration: none;
+    transition: transform 0.2s ease, background 0.3s ease;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+}
+
+.btn-3d:hover {
+    transform: translateY(-2px);
+    background: linear-gradient(90deg, #0056b3, #4b0082);
+}
+
+/* Danger (Delete) */
+.btn-3d.danger {
+    background: linear-gradient(90deg, #e63946, #d62828);
+}
+.btn-3d.danger:hover {
+    background: linear-gradient(90deg, #b71c1c, #7f0000);
+}
+
+/* === Student Table === */
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    background: #1e2738;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+    color: #ffffff;
+    font-size: 15px;
+}
+
+.styled-table th {
+    background: linear-gradient(90deg, #007bff, #6f42c1);
+    color: #ffffff;
+    padding: 12px;
+    font-weight: 600;
+    text-align: center;
+    letter-spacing: 0.5px;
+    font-size: 14px;
+}
+
+.styled-table td {
+    border: 1px solid #2c3e50;
+    padding: 10px;
+    text-align: center;
+    color: #ffffff !important;
+    vertical-align: middle;
+}
+
+.styled-table tr:nth-child(even) {
+    background: #252f44;
+}
+
+.styled-table tr:hover {
+    background: #2f3d5c;
+    transition: 0.2s ease-in-out;
+}
+
+
+
+
+
+

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="dashboard-box">
+    <h2>👨‍🎓 Manage Students</h2>
+    <a href="{{ url_for('admin_add_student') }}" class="btn-3d">➕ Add Student</a>
+
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>Roll No</th>
+                <th>Name</th>
+                <th>Branch</th>
+                <th>Batch</th>
+                <th>Date of Birth</th>
+                <th>Password</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+            <tr>
+                <td>{{ student.roll_no }}</td>
+                <td>{{ student.name }}</td>
+                <td>{{ student.branch }}</td>
+                <td>{{ student.batch }}</td>
+                <td>{{ student.dob }}</td>
+                <td>{{ student.password }}</td>
+                <td>
+                    <a href="{{ url_for('admin_edit_student', roll_no=student.roll_no) }}" class="btn-3d">✏️ Edit</a>
+                    <a href="{{ url_for('admin_delete_student', roll_no=student.roll_no) }}" 
+                       class="btn-3d danger"
+                       onclick="return confirm('Delete this student?')">🗑️ Delete</a>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="7" style="text-align:center;">No students found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

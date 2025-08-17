@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="dashboard-box">
+    <h2>📌 Manage Problems</h2>
+    <a href="{{ url_for('admin_add_problem') }}" class="btn-3d">➕ Add Problem</a>
+
+
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Title</th>
+                <th>Skill</th>
+                <th>Category</th>
+                <th>Branch</th>
+                <th>External Link</th>
+                <th>Created By</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in problems %}
+            <tr>
+                <!-- numbering -->
+                <td>{{ loop.index }}</td>
+
+                <!-- problem details -->
+                <td><strong>{{ p['title'] }}</strong></td>
+                <td>{{ p['skill'] }}</td>
+                <td>{{ p['category'] }}</td>
+
+                <!-- branch badges -->
+                <td>
+                    {% set branch_colors = {
+                        'CSE': '#007bff',
+                        'IT': '#28a745',
+                        'ECE': '#ff9800',
+                        'EEE': '#9c27b0',
+                        'ME': '#795548'
+                    } %}
+                    {% set color = branch_colors.get(p['branch'], '#607d8b') %}
+                    <span style="background:{{ color }}; color:white; padding:4px 8px; border-radius:6px; font-size:12px;">
+                        {{ p['branch'] }}
+                    </span>
+                </td>
+
+                <!-- external link if exists -->
+                <td>
+                    {% if p['external_link'] %}
+                        <a href="{{ p['external_link'] }}" target="_blank">🔗 Link</a>
+                    {% else %}
+                        —
+                    {% endif %}
+                </td>
+
+                <!-- created by (compact) -->
+                <td>
+                    <strong>{{ p['created_by_name'] }}</strong><br>
+                    <small>{{ p['created_by_roll'] }} | {{ p['created_by_branch'] }} - {{ p['created_by_batch'] }}</small>
+                </td>
+
+                <!-- action buttons -->
+                <td>
+                    <a href="{{ url_for('admin_edit_problem', problem_id=p['id']) }}" class="btn-3d">✏️ Edit</a>
+                    <a href="{{ url_for('admin_delete_problem', problem_id=p['id']) }}" class="btn-3d danger"
+                       onclick="return confirm('❗ Are you sure you want to delete this problem?')">🗑 Delete</a>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="8" style="text-align:center; font-style:italic;">No problems found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="dashboard-box">
+    <h2>🎓 Manage Students</h2>
+
+    <!-- ➕ Add Student Form -->
+    <div class="form-container">
+        <h3>➕ Add Student</h3>
+        <form method="POST" action="{{ url_for('admin_add_student') }}">
+            <label>Name:</label>
+            <input type="text" name="name" required>
+
+            <label>Roll No:</label>
+            <input type="text" name="roll_no" required>
+
+            <label>Branch:</label>
+            <input type="text" name="branch" required>
+
+            <label>Batch:</label>
+            <input type="text" name="batch" required>
+
+            <label>Date of Birth (DOB):</label>
+            <input type="text" name="dob" placeholder="DDMMYYYY" required>
+
+            <label>Password:</label>
+            <input type="password" name="password" required>
+
+            <button type="submit" class="btn-3d">Add Student</button>
+        </form>
+    </div>
+
+    <!-- 📋 Students Table -->
+    <h3 style="margin-top:30px;">📋 Student List</h3>
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Roll No</th>
+                <th>Branch</th>
+                <th>Batch</th>
+                <th>DOB</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for s in students %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td><strong>{{ s['name'] }}</strong></td>
+                <td>{{ s['roll_no'] }}</td>
+
+                <!-- Branch Badge (consistent with problems table) -->
+                <td>
+                    {% set branch_colors = {
+                        'CSE': '#007bff',
+                        'IT': '#28a745',
+                        'ECE': '#ff9800',
+                        'EEE': '#9c27b0',
+                        'ME': '#795548'
+                    } %}
+                    {% set color = branch_colors.get(s['branch'], '#607d8b') %}
+                    <span style="background:{{ color }}; color:white; padding:4px 8px; border-radius:6px; font-size:12px;">
+                        {{ s['branch'] }}
+                    </span>
+                </td>
+
+                <td>{{ s['batch'] }}</td>
+                <td>{{ s['dob'] }}</td>
+
+                <!-- Actions -->
+                <td>
+                    <a href="{{ url_for('admin_edit_student', student_id=s['id']) }}" class="btn-3d">✏️ Edit</a>
+                    <a href="{{ url_for('admin_delete_student', student_id=s['id']) }}" class="btn-3d danger"
+                       onclick="return confirm('❗ Delete this student?')">🗑 Delete</a>
+                </td>
+            </tr>
+            {% else %}
+            <tr>
+                <td colspan="7" style="text-align:center; font-style:italic;">No students found.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

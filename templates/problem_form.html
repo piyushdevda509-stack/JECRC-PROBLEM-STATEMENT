@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="form-container">
+    <h2>{{ 'Edit Problem' if problem else 'Add New Problem' }}</h2>
+
+    <form method="post">
+        <label>Title:</label>
+        <input type="text" name="title" value="{{ problem['title'] if problem else '' }}" 
+               {% if problem %}readonly{% endif %} required><br><br>
+
+        <label>Description:</label><br>
+        <textarea name="description" rows="4" cols="50" required>{{ problem['description'] if problem else '' }}</textarea><br><br>
+
+        <label>Skill:</label>
+        <input type="text" name="skill" value="{{ problem['skill'] if problem else '' }}" required><br><br>
+
+        <label>Category:</label>
+        <input type="text" name="category" value="{{ problem['category'] if problem else '' }}" required><br><br>
+
+        <label>Branch:</label>
+        <input type="text" name="branch" value="{{ problem['branch'] if problem else '' }}" required><br><br>
+
+        <label>External Link:</label>
+        <input type="url" name="external_link" value="{{ problem['external_link'] if problem else '' }}" required><br><br>
+
+        <label>Created By (Name):</label>
+        <input type="text" name="created_by_name" value="{{ problem['created_by_name'] if problem else '' }}" required><br><br>
+
+        <label>Created By (Roll No):</label>
+        <input type="text" name="created_by_roll" value="{{ problem['created_by_roll'] if problem else '' }}" required><br><br>
+
+        <label>Created By (Branch):</label>
+        <input type="text" name="created_by_branch" value="{{ problem['created_by_branch'] if problem else '' }}" required><br><br>
+
+        <label>Created By (Batch):</label>
+        <input type="text" name="created_by_batch" value="{{ problem['created_by_batch'] if problem else '' }}" required><br><br>
+
+        <button type="submit">Save</button>
+        <a href="{{ url_for('admin_problems') }}">Cancel</a>
+    </form>
+</div>
+{% endblock %}

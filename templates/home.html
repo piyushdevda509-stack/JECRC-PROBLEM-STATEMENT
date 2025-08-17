@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="problems-container">
+    <br>
+
+    <!-- Problems Grid -->
+    <div class="problems-grid" id="problemsList">
+        {% for problem in problems %}
+        <div class="problem-card" 
+             data-title="{{ problem.title | lower }}" 
+             data-description="{{ problem.description | lower }}"
+             data-branch="{{ problem.branch }}"
+             data-skill="{{ problem.skill }}">
+             
+            <h3>{{ problem.title }}</h3>
+            <p class="description">{{ problem.description }}</p>
+            
+            <ul class="details">
+                <li><strong>Skill:</strong> {{ problem.skill }}</li>
+                <li><strong>Category:</strong> {{ problem.category }}</li>
+                <li><strong>Branch:</strong> {{ problem.branch }}</li>
+            </ul>
+
+            <!-- Apply button links to detail page -->
+            <a href="{{ url_for('problem_detail', problem_id=problem.id) }}" class="btn-3d">Apply</a>
+
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

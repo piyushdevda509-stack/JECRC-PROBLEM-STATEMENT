@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="login-container">
+    <form method="post" class="login-form">
+        <div style="text-align:center; color:rgba(7, 7, 14, 0.91); font-size:24px; font-weight:bold; margin-bottom:20px;">
+            Login
+        </div>
+
+        <label for="roll_no">ID</label>
+        <input type="text" name="roll_no" id="roll_no" required placeholder="Enter your ID" />
+
+        <label for="password">Password</label>
+        <div style="position: relative;">
+            <input type="password" name="password" id="password" required placeholder="Enter your password" />
+            <span class="toggle-password" onclick="togglePassword('password', this)">👁️</span>
+        </div>
+
+        <button type="submit">Click</button>
+
+        <p><a href="{{ url_for('forget_password') }}">Forget Password?</a></p>
+        <h5><a href="{{ url_for('helpdesk') }}">Helpdesk</a></h5>
+    </form>
+</div>
+
+<style>
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 18px;
+    user-select: none;
+}
+</style>
+
+<script>
+function togglePassword(fieldId, element) {
+    const field = document.getElementById(fieldId);
+    if (field.type === "password") {
+        field.type = "text";
+        element.textContent = "🙈"; // hide icon
+    } else {
+        field.type = "password";
+        element.textContent = "👁️"; // show icon
+    }
+}
+</script>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="login2-container">
+    <form method="post" class="login2-form">
+        <div style="text-align:center; color:rgba(22, 22, 26, 0.91); font-size:24px; font-weight:bold; margin-bottom:20px;">
+            Login
+        </div>
+
+        <label>Username:</label>
+        <input type="text" name="username" required><br><br>
+
+        <label>Password:</label>
+        <div style="position: relative; display: inline-block; width: 100%;">
+            <input type="password" name="password" id="password" required style="width:100%;" />
+            <span class="toggle-password" onclick="togglePassword('password', this)">👁️</span>
+        </div>
+        <br><br>
+
+        <button type="submit">Click</button>
+    </form>
+</div>
+
+<style>
+.toggle-password {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 18px;
+    user-select: none;
+}
+</style>
+
+<script>
+function togglePassword(fieldId, element) {
+    const field = document.getElementById(fieldId);
+    if (field.type === "password") {
+        field.type = "text";
+        element.textContent = "🙈"; // hide icon
+    } else {
+        field.type = "password";
+        element.textContent = "👁️"; // show icon
+    }
+}
+</script>
+{% endblock %}

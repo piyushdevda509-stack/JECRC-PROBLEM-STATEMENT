@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="form-container">
+    <h2>✏️ Edit Student</h2>
+    <form method="POST">
+        <label>Name:</label>
+        <input type="text" name="name" value="{{ student.name }}" required>
+
+        <label>Branch:</label>
+        <input type="text" name="branch" value="{{ student.branch }}" required>
+
+        <label>Batch:</label>
+        <input type="text" name="batch" value="{{ student.batch }}" required>
+
+        <label>Date of Birth:</label>
+        <input type="date" name="dob" value="{{ student.dob }}" required>
+
+       <label for="password">Password (leave blank to keep unchanged):</label>
+<div class="input-with-icon">
+    <input type="password" id="password" name="password" placeholder="Enter new password">
+    <button type="button" class="togglePassword">
+        <i class="fa-solid fa-eye"></i>
+    </button>
+</div>
+
+
+        <button type="submit" class="btn-3d">Update Student</button>
+    </form>
+</div>
+{% endblock %}

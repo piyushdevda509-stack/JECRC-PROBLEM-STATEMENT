@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ problem.title }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: linear-gradient(135deg, #141E30, #243B55); /* Same as other pages */
+            color: #fff;
+        }
+
+        .navbar {
+            background: rgba(0,0,0,0.6);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .navbar a:hover {
+            color: #ff9800;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: rgba(255,255,255,0.08);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #ffeb3b;
+        }
+
+        .section {
+            background: rgba(0,0,0,0.3);
+            padding: 20px;
+            margin: 15px 0;
+            border-radius: 12px;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #ff9800;
+            padding: 12px 25px;
+            border-radius: 8px;
+            color: #fff;
+            font-weight: bold;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            background: #e68900;
+            transform: scale(1.05);
+        }
+
+        a {
+            color: #4dd0e1;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <div><a href="{{ url_for('home') }}">🏠 Home</a></div>
+        <div>
+            <a href="{{ url_for('helpdesk') }}">Helpdesk</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </div>
+    </div>
+
+    <!-- Problem Content -->
+    <div class="container">
+        <h2>{{ problem.title }}</h2>
+
+        <div class="section">
+            <h3>📌 Problem Details</h3>
+            <p><b>Description:</b> {{ problem.description }}</p>
+            <p><b>Skill Required:</b> {{ problem.skill }}</p>
+            <p><b>Category:</b> {{ problem.category }}</p>
+            <p><b>Branch:</b> {{ problem.branch }}</p>
+            <p><b>Link:</b> <a href="{{ problem.external_link }}" target="_blank">Click Here</a></p>
+        </div>
+
+        <div class="section">
+            <h3>👨‍🎓Idea Innovator Details</h3>
+            <p><b>Name:</b> {{ problem.created_by_name }}</p>
+            <p><b>Roll No:</b> {{ problem.created_by_roll }}</p>
+            <p><b>Branch:</b> {{ problem.created_by_branch }}</p>
+            <p><b>Batch:</b> {{ problem.created_by_batch }}</p>
+        </div>
+
+        <div style="text-align:center;">
+            <a href="{{ url_for('home') }}" class="btn">⬅ Back to Problems</a>
+        </div>
+    </div>
+
+</body>
+</html>

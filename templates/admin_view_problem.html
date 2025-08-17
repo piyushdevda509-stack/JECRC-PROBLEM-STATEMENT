@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ problem['title'] }}</h2>
+<p><b>Description:</b> {{ problem['description'] }}</p>
+<p><b>Skill:</b> {{ problem['skill'] }}</p>
+<p><b>Category:</b> {{ problem['category'] }}</p>
+<p><b>Branch:</b> {{ problem['branch'] }}</p>
+<p><b>External Link:</b> <a href="{{ problem['external_link'] }}" target="_blank">{{ problem['external_link'] }}</a></p>
+<p><b>Created By:</b> {{ problem['created_by_name'] }} ({{ problem['created_by_roll'] }}, {{ problem['created_by_branch'] }} - {{ problem['created_by_batch'] }})</p>
+
+<a href="{{ url_for('admin_problems') }}">Back to Problems</a>
+{% endblock %}

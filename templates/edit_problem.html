@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="form-container">
+    <h2>✏️ Edit Problem</h2>
+    <form method="POST">
+        <label>Title:</label>
+        <input type="text" name="title" value="{{ problem.title }}" disabled>
+
+        <label>Description:</label>
+        <textarea name="description" required>{{ problem.description }}</textarea>
+
+        <label>Skill:</label>
+        <input type="text" name="skill" value="{{ problem.skill }}" required>
+
+        <label>Category:</label>
+        <input type="text" name="category" value="{{ problem.category }}" required>
+
+        <label>Branch:</label>
+        <input type="text" name="branch" value="{{ problem.branch }}" required>
+
+        <button type="submit" class="btn-3d">Update Problem</button>
+    </form>
+</div>
+{% endblock %}

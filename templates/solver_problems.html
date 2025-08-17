@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Available Problems</h2>
+
+<table border="1" cellpadding="8">
+    <tr>
+        <th>Title</th>
+        <th>Skill</th>
+        <th>Category</th>
+        <th>Branch</th>
+        <th>Action</th>
+    </tr>
+    {% for p in problems %}
+    <tr>
+        <td>{{ p['title'] }}</td>
+        <td>{{ p['skill'] }}</td>
+        <td>{{ p['category'] }}</td>
+        <td>{{ p['branch'] }}</td>
+        <td><a href="{{ url_for('solver_view_problem', problem_id=p['id']) }}">View</a></td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}

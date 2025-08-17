@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="form-container">
+    <h2>✏️ Edit Student</h2>
+    <form method="POST">
+        <label>Name:</label>
+        <input type="text" name="name" value="{{ student.name }}" required>
+
+        <label>Roll No:</label>
+        <input type="text" value="{{ student.roll_no }}" disabled>
+        <small>(Roll number cannot be changed)</small>
+
+        <label>Branch:</label>
+        <input type="text" name="branch" value="{{ student.branch }}" required>
+
+        <label>Batch:</label>
+        <input type="text" name="batch" value="{{ student.batch }}" required>
+
+        <label>Date of Birth (DOB):</label>
+        <input type="text" name="dob" value="{{ student.dob }}" placeholder="DDMMYYYY" required>
+
+        <div class="password-wrapper">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" value="{{ student.password }}" required>
+            <span class="toggle-password">👁️</span>
+        </div>
+
+        <div class="password-wrapper">
+            <label for="confirm_password">Confirm Password:</label>
+            <input type="password" id="confirm_password" name="confirm_password" required>
+            <span class="toggle-password">👁️</span>
+        </div>
+
+        <button type="submit" class="btn-3d">Update Student</button>
+    </form>
+</div>
+
+<style>
+/* === Form Styling === */
+.form-container {
+    background: rgba(40, 50, 70, 0.85);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    box-shadow: inset 0 1px 4px rgba(255,255,255,0.1);
+}
+
+.form-container label {
+    display: block;
+    margin: 10px 0 5px;
+    color: #ffffff;
+    font-weight: 500;
+}
+
+.form-container input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #444;
+    background: #2b2f3c;
+    color: #ffffff;
+    margin-bottom: 15px;
+}
+
+.form-container input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Buttons */
+.btn-3d {
+    display: inline-block;
+    padding: 8px 14px;
+    border-radius: 6px;
+    background: linear-gradient(90deg, #007bff, #6f42c1);
+    color: #fff;
+    font-weight: 500;
+    text-decoration: none;
+    transition: transform 0.2s ease, background 0.3s ease;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.3);
+    border: none;
+    cursor: pointer;
+}
+
+.btn-3d:hover {
+    transform: translateY(-2px);
+    background: linear-gradient(90deg, #0056b3, #4b0082);
+}
+
+/* === Password Toggle Styling === */
+.password-wrapper {
+    position: relative;
+    margin-bottom: 15px;
+}
+
+.password-wrapper input {
+    padding-right: 40px; /* space for toggle */
+}
+
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 18px;
+    color: #aaa;
+    transition: color 0.2s ease-in-out;
+    user-select: none;
+}
+
+.toggle-password:hover {
+    color: #ffffff;
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".toggle-password").forEach(toggle => {
+        toggle.addEventListener("click", function () {
+            const input = this.previousElementSibling;
+            if (input.type === "password") {
+                input.type = "text";
+                this.textContent = "🙈"; // hide icon
+            } else {
+                input.type = "password";
+                this.textContent = "👁️"; // show icon
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

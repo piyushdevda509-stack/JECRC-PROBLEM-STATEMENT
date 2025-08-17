@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="form-container">
+    <h2>{{ 'Edit Student' if student else 'Add New Student' }}</h2>
+
+    <form method="post">
+        <label>Roll No:</label>
+        <input type="text" name="roll_no" value="{{ student['roll_no'] if student else '' }}" 
+               {% if student %}readonly{% endif %} required><br><br>
+
+        <label>Name:</label>
+        <input type="text" name="name" value="{{ student['name'] if student else '' }}" required><br><br>
+
+        <label>Branch:</label>
+        <input type="text" name="branch" value="{{ student['branch'] if student else '' }}" required><br><br>
+
+        <label>Batch:</label>
+        <input type="text" name="batch" value="{{ student['batch'] if student else '' }}" required><br><br>
+
+        <div class="password-wrapper">
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" value="{{ student['password'] }}" required>
+    <button type="button" class="togglePassword">
+        <i class="fa-solid fa-eye"></i>
+    </button>
+</div>
+
+        <button type="submit">Save</button>
+        <a href="{{ url_for('admin_students') }}">Cancel</a>
+    </form>
+</div>
+{% endblock %}

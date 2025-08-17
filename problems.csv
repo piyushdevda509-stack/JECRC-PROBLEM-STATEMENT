@@ -1,0 +1,5 @@
+title,description,skill,category,branch,external_link,created_by_name,created_by_roll,created_by_branch,created_by_batch
+Smart Irrigation System,Build a system using IoT sensors to automate farm irrigation.,IoT,Agriculture,EC,https://jecrcfoundation.com/,Ravi Sharma,22EJCEC121,EC,2026
+AI Chatbot for College Enquiries,Develop an AI chatbot to handle admission FAQs.,AI,Education,CSE,https://jecrcfoundation.com/,Anjali Verma,23EJCCS122,CSE,2027
+Library Management Web App,Create a web app to manage book lending using Flask.,Python,Software,IT,https://jecrcfoundation.com/,Rohit Kumar,22EJCIT123,IT,2026
+Smart Attendance System,Face recognition-based attendance tracker.,ML,Automation,CSE,https://jecrcfoundation.com/,Neha Singh,24EJCCS124,CSE,2028
