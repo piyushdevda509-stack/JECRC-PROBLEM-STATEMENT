@@ -20,6 +20,10 @@
         <label>Date of Birth (DOB):</label>
         <input type="text" name="dob" value="{{ student.dob }}" placeholder="DDMMYYYY" required>
 
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" value="{{ student['email'] }}" required>
+
+
         <div class="password-wrapper">
             <label for="password">Password:</label>
             <input type="password" id="password" name="password" value="{{ student.password }}" required>

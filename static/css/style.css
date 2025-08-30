@@ -1028,6 +1028,49 @@ body {
   background: #2a3354;
 }
 
+.action-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+/* Base style */
+.btn-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 90px;
+  padding: 6px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #fff;
+  transition: all 0.25s ease;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.25);
+}
+
+/* Specific colors with gradient */
+.btn-action.edit {
+  background: linear-gradient(135deg, #2196f3, #0d47a1);
+}
+.btn-action.delete {
+  background: linear-gradient(135deg, #f44336, #b71c1c);
+}
+.btn-action.approve {
+  background: linear-gradient(135deg, #4caf50, #1b5e20);
+}
+.btn-action.reject {
+  background: linear-gradient(135deg, #ff9800, #e65100);
+}
+
+/* Hover effect */
+.btn-action:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.35);
+}
+
+
 /*----adim add student----*/
 /* === Dashboard Box === */
 .dashboard-box {
@@ -1144,8 +1187,241 @@ body {
     transition: 0.2s ease-in-out;
 }
 
+/* add problem design */
+/* Page background */
+body {
+  background: linear-gradient(135deg, #0a0f1e, #1b2236);
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+}
 
+/* Card style (dark mode) */
+.card {
+  background: #151a2e;
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.4);
+  margin-bottom: 30px;
+  color: #ffffff;
+}
 
+/* Section titles */
+.card h2, .card h3 {
+  margin-bottom: 15px;
+  color: #4a8dff; /* Accent blue */
+  font-size: 20px;
+  font-weight: 600;
+}
 
+/* Form layout */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+.form-group label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  display: block;
+  color: #ddd;
+}
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #444;
+  border-radius: 8px;
+  font-size: 14px;
+  background: #0f1324;
+  color: #fff;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: #4a8dff;
+  outline: none;
+  box-shadow: 0 0 6px #4a8dff88;
+}
+.form-group textarea {
+  resize: vertical;
+  min-height: 80px;
+}
 
+/* Gradient button */
+.btn {
+  background: linear-gradient(90deg, #0077ff, #5c2eff);
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+.btn:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+/* admin view problem details */
+.styled-table {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 16px;
+    min-width: 800px;
+    border-radius: 12px 12px 0 0;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0,0,0,0.15);
+}
 
+.styled-table thead tr {
+    background: linear-gradient(90deg, #2196f3, #9c27b0);
+    color: #ffffff;
+    text-align: left;
+    font-weight: bold;
+}
+
+.styled-table th, .styled-table td {
+    padding: 12px 15px;
+    text-align: center;
+}
+
+.styled-table tbody tr {
+    background-color: #2c2c54;
+    color: #fff;
+    border-bottom: 1px solid #444;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #3c3c70;
+}
+
+/* This is the new CSS for centering the titles */
+.centered-title {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.main-college-title {
+    color: #fff;
+    font-size: 28px; /* Larger font size for the main title */
+    font-weight: bold;
+    margin: 0;
+    text-shadow: 0 0 5px #a0c2ff;
+}
+
+.sub-title {
+    color: #fff;
+    font-size: 16px; /* Smaller font size for the sub-title */
+    margin: 0;
+    font-weight: normal;
+}
+
+.header-nav {
+    display: flex;
+    align-items: center;
+}
+
+.header-links-group {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Spacing between links */
+}
+
+.header-links-group span {
+    color: #8c9cb6; /* Separator color */
+}
+
+.nav-btn {
+    background-color: #21356c; /* Blue button background */
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 20px; /* Fully rounded buttons */
+    text-decoration: none;
+    font-weight: 500;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    border: 1px solid #4d649d;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.nav-btn:hover {
+    background-color: #2a4185;
+    transform: translateY(-2px);
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4), 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.welcome-text {
+    color: #a0c2ff;
+    font-weight: bold;
+}
+
+/* --- Main Footer Section (Original Multi-Column Layout) --- */
+.main-footer {
+    background-color: #000033; /* Dark blue as in the image */
+    color: #fff;
+    padding: 50px 20px 20px;
+}
+
+.footer-container {
+    display: flex;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    flex-wrap: wrap; /* Allows columns to wrap on smaller screens */
+}
+
+.footer-section {
+    flex: 1;
+    min-width: 200px; /* Ensures columns don't get too narrow */
+    margin: 15px;
+}
+
+.footer-section h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.footer-section ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-section li {
+    margin-bottom: 10px;
+}
+
+.footer-section a {
+    color: #ccc;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer-section a:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+.footer-logo {
+    max-width: 150px;
+    margin-bottom: 15px;
+}
+
+/* --- Bottom Footer (Designed By) --- */
+.footer-bottom {
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid #333;
+    margin-top: 30px;
+}
+
+.footer-bottom p {
+    font-size: 12px;
+    color: #aaa;
+}

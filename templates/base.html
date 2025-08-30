@@ -1,79 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>JECRC Problem Statement</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
-    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+ <meta charset="UTF-8" />
+ <meta name="viewport" content="width=device-width, initial-scale=1" />
+ <title>{% block title %}JECRC Problem Statement{% endblock %}</title>
+ <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+ <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
 </head>
 <body>
-    <header>
-        <h1>JECRC Problem Statement</h1>
-        <nav>
-            {% if session.get('user') %}
-                <a href="{{ url_for('home') }}">Home</a> |
-                <a href="{{ url_for('change_password') }}">Change Password </a>
-                <a href="{{ url_for('helpdesk') }}">Helpdesk</a> |
-                <a href="{{ url_for('logout') }}">Logout ({{ session['user'] }})</a>
-                
-            
-            {% elif session.get('admin') %}
-                <a href="{{ url_for('admin_dashboard') }}">Dashboard</a> |
-                <a href="{{ url_for('logout') }}">Logout (Admin)</a>
-                <a href="{{ url_for('admin_change_password') }}">Change Password</a>
-
-            
-            {% else %}
-                <a href="{{ url_for('login') }}">Student Login</a> |
-                <a href="{{ url_for('admin_login') }}">Admin Login</a>
-            {% endif %}
-        </nav>
+    <header class="main-header">
+        <!-- The logo section is now a separate, correctly placed div -->
+        <div >
+        </div>
+        <!-- This is the main content area for the titles and navigation -->
+        <div class="header-content centered-title">
+            <h1 class="main-college-title">JAIPUR ENGINEERING COLLEGE AND RESEARCH CENTER</h1>
+            <h2 class="sub-title">JECRC Problem Statement</h2>
+            <nav class="header-nav">
+                {% if session.get('user') %}
+                    <div class="header-links-group">
+                        <span class="welcome-text">👋 Welcome {{ session['student_name'] }}</span>
+                        <span>|</span>
+                        <a href="{{ url_for('home') }}" class="nav-btn">Home</a>
+                        <span>|</span>
+                        <a href="{{ url_for('student_add_problem') }}" class="nav-btn">➕ Add Problem</a>
+                        <span>|</span>
+                        <a href="{{ url_for('student_problems') }}" class="nav-btn">My Problems</a>
+                        <span>|</span>
+                        <a href="{{ url_for('change_password') }}" class="nav-btn">Change Password</a>
+                        <span>|</span>
+                        <a href="{{ url_for('helpdesk') }}" class="nav-btn">Helpdesk</a>
+                        <span>|</span>
+                        <a href="{{ url_for('logout') }}" class="nav-btn">Logout</a>
+                    </div>
+                {% elif session.get('admin') %}
+                    <div class="header-links-group">
+                        <span class="welcome-text">🔑 Admin Panel</span>
+                        <span>|</span>
+                        <a href="{{ url_for('admin_dashboard') }}" class="nav-btn">Dashboard</a>
+                        <span>|</span>
+                        <a href="{{ url_for('admin_change_password') }}" class="nav-btn">Change Password</a>
+                        <span>|</span>
+                        <a href="{{ url_for('logout') }}" class="nav-btn">Logout</a>
+                    </div>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="nav-btn">Student Login</a>
+                    <a href="{{ url_for('admin_login') }}" class="nav-btn">Admin Login</a>
+                {% endif %}
+            </nav>
+        </div>
     </header>
 
     <main>
-        {# Flash messages (auto-hidden by script.js) #}
+        {# ✅ Flash messages - styled divs instead of <ul> #}
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
-                <ul class="flashes">
+                <div class="flashes">
                     {% for category, message in messages %}
-                        <li class="flash flash-{{ category }}">{{ message }}</li>
+                        <div class="flash flash-{{ category }}">{{ message }}</div>
                     {% endfor %}
-                </ul>
+                </div>
             {% endif %}
         {% endwith %}
 
-        {# Search and Filters - only show if student logged in and on home page #}
-        {% if session.get('user') and request.endpoint == 'home' %}
+        {# ✅ Filters - only show if student logged in and on home page #}
+        {% if session.get('user') and request and request.endpoint == 'home' %}
         <section class="filters">
-            <input type="text" id="searchBox" placeholder="Search problems..." />
+            <form method="get" id="filterForm">
+                <input type="text" id="searchBox" name="q" placeholder="Search problems..." />
 
-            <select id="branchFilter">
-                <option value="all">All Branches</option>
-                <option value="CSE">CSE</option>
-                <option value="IT">IT</option>
-                <option value="EC">EC</option>
-                <option value="EE">EE</option>
-                <option value="ME">ME</option>
-            </select>
+                <select id="branchFilter" name="branch">
+                    <option value="all">All Branches</option>
+                    <option value="CSE">CSE</option>
+                    <option value="IT">IT</option>
+                    <option value="EC">EC</option>
+                    <option value="EE">EE</option>
+                    <option value="ME">ME</option>
+                </select>
 
-            <select id="skillFilter">
-                <option value="all">All Skills</option>
-                <option value="AI">AI</option>
-                <option value="ML">ML</option>
-                <option value="IoT">IoT</option>
-                <option value="Python">Python</option>
-                <option value="Web">Web</option>
-            </select>
+                <select id="skillFilter" name="skill">
+                    <option value="all">All Skills</option>
+                    <option value="AI">AI</option>
+                    <option value="ML">ML</option>
+                    <option value="IoT">IoT</option>
+                    <option value="Python">Python</option>
+                    <option value="Web">Web</option>
+                </select>
+            </form>
         </section>
         {% endif %}
 
-        {# Page-specific content goes here #}
         {% block content %}{% endblock %}
     </main>
-
-    <footer>
-        <p>This Website designed by Piyush Devda | Branch: AIDS | Batch: 2028</p>
-    </footer>
+    
+    {% include 'footer.html' %}
 </body>
 </html>

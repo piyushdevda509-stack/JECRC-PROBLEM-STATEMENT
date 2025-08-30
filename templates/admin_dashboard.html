@@ -5,10 +5,12 @@
     <h2>⚡ Admin Dashboard</h2>
     <p>Welcome, Admin. Choose an option:</p>
 
-    <div class="dashboard-links">
-        <a href="{{ url_for('change_student_password') }}" class="btn-3d">🔑 Change Student Password</a>
+   
+</a>
+
         <a href="{{ url_for('admin_students') }}" class="btn-3d">👨‍🎓 Manage Students</a>
         <a href="{{ url_for('admin_problems') }}" class="btn-3d">📌 Manage Problems</a>
+        <a href="{{ url_for('problems') }}" class="btn-3d">🌍 View Approved Problems</a>
     </div>
 </div>
 {% endblock %}

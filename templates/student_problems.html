@@ -1,0 +1,214 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="dashboard-box">
+    <h2>🎓 My Problems</h2>
+
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Title</th>
+                <th>Skill</th>
+                <th>Category</th>
+                <th>Branch</th>
+                <th>📄 Synopsis</th>
+                <th>📑 Report</th>
+                <th>🎓 Certificate</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if my_problems %}
+                {% for p in my_problems %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td><strong>{{ p['title'] }}</strong></td>
+                        <td>{{ p['skill'] }}</td>
+                        <td>{{ p['category'] }}</td>
+
+                        <!-- Branch badge -->
+                        <td>
+                            {% set branch_colors = {
+                                'CSE': '#007bff',
+                                'IT': '#28a745',
+                                'ECE': '#ff9800',
+                                'EEE': '#9c27b0',
+                                'ME': '#795548',
+                                'AIDS': '#6a1b9a'
+                            } %}
+                            {% set color = branch_colors.get(p['branch'], '#607d8b') %}
+                            <span class="badge" style="background:{{ color }};">
+                                {{ p['branch'] }}
+                            </span>
+                        </td>
+
+                        <!-- Synopsis -->
+<td>
+    {% if p['synopsis_path'] %}
+        <a href="{{ url_for('serve_upload', relpath=p['synopsis_path'].replace('uploads/', '')) }}" 
+           target="_blank" rel="noopener">📄 View</a>
+    {% else %}
+        —
+    {% endif %}
+</td>
+
+<!-- Report -->
+<td>
+    {% if p['report_path'] %}
+        <a href="{{ url_for('serve_upload', relpath=p['report_path'].replace('uploads/', '')) }}" 
+           target="_blank" rel="noopener">📑 View</a>
+    {% else %}
+        —
+    {% endif %}
+</td>
+
+<!-- Certificate -->
+<td>
+    {% if p['certificate_path'] %}
+        <a href="{{ url_for('serve_upload', relpath=p['certificate_path'].replace('uploads/', '')) }}" 
+           target="_blank" rel="noopener">🎓 View</a>
+    {% else %}
+        —
+    {% endif %}
+</td>
+
+                        <!-- Status -->
+                        <td>
+                            {% if p['status'] == "approved" %}
+                                <span class="status approved">✔ Approved</span>
+                            {% elif p['status'] == "rejected" %}
+                                <span class="status rejected">❌ Rejected</span>
+                                {% if p['rejection_reason'] %}
+                                    <div class="rejection-reason">
+                                        <strong>Reason:</strong> {{ p['rejection_reason'] }}
+                                    </div>
+                                {% endif %}
+                            {% else %}
+                                <span class="status pending">⏳ Pending</span>
+                            {% endif %}
+                        </td>
+
+                        <!-- Action -->
+                        <td>
+                            {% if p['status'] == "rejected" %}
+                                <a href="{{ url_for('student_edit_problem', pid=p['id']) }}" class="btn-edit">✏ Edit</a>
+
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="10" style="text-align:center; color:gray; padding:15px;">
+                        ⚠ No problems submitted yet!
+                    </td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+
+
+<div class="dashboard-box" style="margin-top:30px;">
+    <h2>🌍 Approved Problems by Others</h2>
+
+    <table class="styled-table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Title</th>
+                <th>Skill</th>
+                <th>Category</th>
+                <th>Branch</th>
+                <th>🔗 External Link</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if other_problems %}
+                {% for p in other_problems %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td><strong>{{ p['title'] }}</strong></td>
+                        <td>{{ p['skill'] }}</td>
+                        <td>{{ p['category'] }}</td>
+
+                        <!-- Branch badge -->
+                        <td>
+                            {% set branch_colors = {
+                                'CSE': '#007bff',
+                                'IT': '#28a745',
+                                'ECE': '#ff9800',
+                                'EEE': '#9c27b0',
+                                'ME': '#795548',
+                                'AIDS': '#6a1b9a'
+                            } %}
+                            {% set color = branch_colors.get(p['branch'], '#607d8b') %}
+                            <span class="badge" style="background:{{ color }};">
+                                {{ p['branch'] }}
+                            </span>
+                        </td>
+
+                        <!-- External Link -->
+                        <td>
+                            {% if p['external_link'] %}
+                                <a href="{{ p['external_link'] }}" target="_blank" rel="noopener">🔗 Link</a>
+                            {% else %}
+                                —
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="6" style="text-align:center; color:gray; padding:15px;">
+                        ⚠ No approved problems from others yet!
+                    </td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+
+<!-- ✅ Extra CSS -->
+<style>
+    .badge {
+        color: white;
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-size: 12px;
+        display: inline-block;
+    }
+    .status {
+        font-weight: bold;
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 12px;
+        display: inline-block;
+    }
+    .status.approved { background: #e6ffed; color: #008000; }
+    .status.rejected { background: #ffe6e6; color: #d32f2f; }
+    .status.pending { background: #fff3cd; color: #856404; }
+    .rejection-reason {
+        font-size: 12px;
+        color: #d32f2f;
+        margin-top: 4px;
+    }
+    .btn-edit {
+        background: #ffc107;
+        color: black;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 12px;
+        text-decoration: none;
+        font-weight: bold;
+    }
+    .btn-edit:hover {
+        background: #e0a800;
+        color: white;
+    }
+</style>
+{% endblock %}

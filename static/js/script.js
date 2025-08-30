@@ -2,13 +2,16 @@
 document.addEventListener("DOMContentLoaded", () => {
 
     // === Flash message auto-hide ===
-    setTimeout(() => {
-        document.querySelectorAll('.flash').forEach(flash => {
-            flash.style.transition = "opacity 1s";
-            flash.style.opacity = "0";
-            setTimeout(() => flash.remove(), 1000);
-        });
-    }, 5000);
+    const flashMessages = document.querySelectorAll('.flash');
+    if (flashMessages.length) {
+        setTimeout(() => {
+            flashMessages.forEach(flash => {
+                flash.style.transition = "opacity 0.8s";
+                flash.style.opacity = "0";
+                setTimeout(() => flash.remove(), 800);
+            });
+        }, 4000); // auto hide after 4s
+    }
 
     // === Problem Search & Filters ===
     const searchBox = document.getElementById("searchBox");
@@ -17,9 +20,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const problems = document.querySelectorAll(".problem-card");
 
     function filterProblems() {
-        const searchText = searchBox ? searchBox.value.toLowerCase() : "";
-        const branchValue = branchFilter ? branchFilter.value : "all";
-        const skillValue = skillFilter ? skillFilter.value : "all";
+        const searchText = searchBox?.value.toLowerCase() || "";
+        const branchValue = branchFilter?.value || "all";
+        const skillValue = skillFilter?.value || "all";
 
         problems.forEach(card => {
             const title = card.dataset.title.toLowerCase();
@@ -27,24 +30,17 @@ document.addEventListener("DOMContentLoaded", () => {
             const branch = card.dataset.branch;
             const skill = card.dataset.skill;
 
-            const matchesSearch =
-                title.includes(searchText) || desc.includes(searchText);
-            const matchesBranch =
-                branchValue === "all" || branch === branchValue;
-            const matchesSkill =
-                skillValue === "all" || skill === skillValue;
+            const matchesSearch = title.includes(searchText) || desc.includes(searchText);
+            const matchesBranch = branchValue === "all" || branch === branchValue;
+            const matchesSkill = skillValue === "all" || skill === skillValue;
 
-            if (matchesSearch && matchesBranch && matchesSkill) {
-                card.style.display = "block";
-            } else {
-                card.style.display = "none";
-            }
+            card.style.display = (matchesSearch && matchesBranch && matchesSkill) ? "block" : "none";
         });
     }
 
-    if (searchBox) searchBox.addEventListener("input", filterProblems);
-    if (branchFilter) branchFilter.addEventListener("change", filterProblems);
-    if (skillFilter) skillFilter.addEventListener("change", filterProblems);
-
+    // Event listeners
+    searchBox?.addEventListener("input", filterProblems);
+    branchFilter?.addEventListener("change", filterProblems);
+    skillFilter?.addEventListener("change", filterProblems);
 
 });

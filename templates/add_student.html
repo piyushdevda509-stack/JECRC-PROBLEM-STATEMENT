@@ -8,10 +8,10 @@
         <h3>➕ Add Student</h3>
         <form method="POST" action="{{ url_for('admin_add_student') }}">
             <label>Name:</label>
-            <input type="text" name="name" required>
+            <input type="text" name="name" required style="text-transform: uppercase;">
 
             <label>Roll No:</label>
-            <input type="text" name="roll_no" required>
+            <input type="text" name="roll_no" required style="text-transform: uppercase;">
 
             <label>Branch:</label>
             <input type="text" name="branch" required>
@@ -22,8 +22,18 @@
             <label>Date of Birth (DOB):</label>
             <input type="text" name="dob" placeholder="DDMMYYYY" required>
 
+            <label for="email">Email</label> 
+            <input type="email" id="email" name="email" required placeholder="Enter student email" required style="text-transform: lowercase;">
+
             <label>Password:</label>
-            <input type="password" name="password" required>
+            <div style="position: relative;">
+                <input type="password" name="password" id="password" required style="padding-right: 40px;">
+                <!-- Toggle Eye Button -->
+                <span onclick="togglePassword()" 
+                      style="position:absolute; right:10px; top:50%; transform:translateY(-50%); cursor:pointer; font-size:14px;">
+                    👁
+                </span>
+            </div>
 
             <button type="submit" class="btn-3d">Add Student</button>
         </form>
@@ -50,7 +60,7 @@
                 <td><strong>{{ s['name'] }}</strong></td>
                 <td>{{ s['roll_no'] }}</td>
 
-                <!-- Branch Badge (consistent with problems table) -->
+                <!-- Branch Badge -->
                 <td>
                     {% set branch_colors = {
                         'CSE': '#007bff',
@@ -70,8 +80,8 @@
 
                 <!-- Actions -->
                 <td>
-                    <a href="{{ url_for('admin_edit_student', student_id=s['id']) }}" class="btn-3d">✏️ Edit</a>
-                    <a href="{{ url_for('admin_delete_student', student_id=s['id']) }}" class="btn-3d danger"
+                    <a href="{{ url_for('admin_edit_student', roll_no=s['roll_no']) }}" class="btn-3d">✏️ Edit</a>
+                    <a href="{{ url_for('admin_delete_student', roll_no=s['roll_no']) }}" class="btn-3d danger"
                        onclick="return confirm('❗ Delete this student?')">🗑 Delete</a>
                 </td>
             </tr>
@@ -83,4 +93,11 @@
         </tbody>
     </table>
 </div>
+
+<script>
+function togglePassword() {
+    const pass = document.getElementById("password");
+    pass.type = pass.type === "password" ? "text" : "password";
+}
+</script>
 {% endblock %}

@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/student_add_problem.css') }}">
+
+<div class="card">
+    <h2>➕ Add Problem Statement</h2>
+
+    <!-- Student Problem Form -->
+    <form method="POST" action="{{ url_for('student_add_problem') }}" enctype="multipart/form-data" class="form-grid">
+
+        <!-- Problem Details -->
+        <div class="form-group">
+            <label for="title">Title:</label>
+            <input type="text" name="title" id="title" required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea name="description" id="description" rows="4" required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="skill">Skill:</label>
+            <input type="text" name="skill" id="skill" required>
+        </div>
+
+        <div class="form-group">
+            <label for="category">Category:</label>
+            <input type="text" name="category" id="category" required>
+        </div>
+
+        <div class="form-group">
+            <label for="branch">Branch:</label>
+            <input type="text" name="branch" id="branch" required>
+        </div>
+
+        <!-- External Link Section -->
+        <div class="form-group">
+            <label>Do you have an external link for this Problem Statement?</label>
+            <div class="toggle-btn-group">
+                <input type="radio" id="linkYes" name="has_link" value="yes">
+                <label for="linkYes">Yes</label>
+
+                <input type="radio" id="linkNo" name="has_link" value="no" checked>
+                <label for="linkNo">No</label>
+            </div>
+
+            <input type="url" name="external_link" id="external_link" 
+                   value="https://jecrcfoundation.com/"
+                   readonly
+                   style="margin-top:10px; width:100%;">
+        </div>
+
+        <!-- File Uploads -->
+        <div class="form-group">
+            <label for="synopsis">Upload Synopsis (PDF):</label>
+            <input type="file" name="synopsis" id="synopsis" accept=".pdf" required>
+        </div>
+
+        <div class="form-group">
+            <label for="certificate">Upload Certificate (PDF):</label>
+            <input type="file" name="certificate" id="certificate" accept=".pdf,.jpg,.jpeg,.png" required>
+        </div>
+
+        <div class="form-group">
+            <label for="report">Upload Report (PDF):</label>
+            <input type="file" name="report" id="report" accept=".pdf" required>
+        </div>
+
+        <!-- Auto-filled hidden fields -->
+        <input type="hidden" name="created_by_name" value="{{ session['student_name'] }}">
+        <input type="hidden" name="created_by_roll" value="{{ session['user'] }}">
+        <input type="hidden" name="created_by_branch" value="{{ student_branch }}">
+        <input type="hidden" name="created_by_batch" value="{{ student_batch }}">
+
+        <button type="submit" class="btn">Submit Problem</button>
+    </form>
+
+    <p style="margin-top:20px; font-size:14px; color:#ffc107;">
+        ⚠️ Note: Your problem will be reviewed by the Admin.  
+        It will only be visible once approved ✅
+    </p>
+</div>
+
+<style>
+/* Modern toggle buttons */
+.toggle-btn-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.toggle-btn-group input[type="radio"] {
+    display: none;
+}
+
+.toggle-btn-group label {
+    padding: 8px 18px;
+    border-radius: 20px;
+    border: 2px solid #007bff;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.3s;
+    user-select: none;
+}
+
+.toggle-btn-group input[type="radio"]:checked + label {
+    background-color: #007bff;
+    color: white;
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const yesBtn = document.getElementById("linkYes");
+    const noBtn = document.getElementById("linkNo");
+    const linkField = document.getElementById("external_link");
+
+    yesBtn.addEventListener("change", () => {
+        linkField.removeAttribute("readonly");
+        linkField.value = "";
+        linkField.focus();
+    });
+
+    noBtn.addEventListener("change", () => {
+        linkField.setAttribute("readonly", true);
+        linkField.value = "https://jecrcfoundation.com/";
+    });
+});
+</script>
+{% endblock %}

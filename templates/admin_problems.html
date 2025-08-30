@@ -5,7 +5,6 @@
     <h2>📌 Manage Problems</h2>
     <a href="{{ url_for('admin_add_problem') }}" class="btn-3d">➕ Add Problem</a>
 
-
     <table class="styled-table">
         <thead>
             <tr>
@@ -15,64 +14,170 @@
                 <th>Category</th>
                 <th>Branch</th>
                 <th>External Link</th>
+                <th>📄 Synopsis</th>
+                <th>📑 Report</th>
+                <th>🎓 Certificate</th>
                 <th>Created By</th>
-                <th>Actions</th>
+                <th>Status</th>
+                <th style="min-width:250px;">Actions</th>
             </tr>
         </thead>
         <tbody>
-            {% for p in problems %}
-            <tr>
-                <!-- numbering -->
-                <td>{{ loop.index }}</td>
+            {% if problems %}
+                {% for p in problems %}
+                {% set st = (p['status'] or '')|lower %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td><strong>{{ p['title'] }}</strong></td>
+                    <td>{{ p['skill'] }}</td>
+                    <td>{{ p['category'] }}</td>
 
-                <!-- problem details -->
-                <td><strong>{{ p['title'] }}</strong></td>
-                <td>{{ p['skill'] }}</td>
-                <td>{{ p['category'] }}</td>
+                    <!-- Branch badge -->
+                    <td>
+                        {% set branch_colors = {
+                            'CSE': '#007bff',
+                            'IT': '#28a745',
+                            'ECE': '#ff9800',
+                            'EEE': '#9c27b0',
+                            'ME': '#795548',
+                            'AIDS': '#6a1b9a'
+                        } %}
+                        {% set color = branch_colors.get(p['branch'], '#607d8b') %}
+                        <span class="badge" style="background:{{ color }};">
+                            {{ p['branch'] }}
+                        </span>
+                    </td>
 
-                <!-- branch badges -->
-                <td>
-                    {% set branch_colors = {
-                        'CSE': '#007bff',
-                        'IT': '#28a745',
-                        'ECE': '#ff9800',
-                        'EEE': '#9c27b0',
-                        'ME': '#795548'
-                    } %}
-                    {% set color = branch_colors.get(p['branch'], '#607d8b') %}
-                    <span style="background:{{ color }}; color:white; padding:4px 8px; border-radius:6px; font-size:12px;">
-                        {{ p['branch'] }}
-                    </span>
-                </td>
+                    <!-- External link -->
+<td>
+    {% if p['external_link'] %}
+        <a href="{{ p['external_link'] }}" target="_blank" rel="noopener">🔗 Link</a>
+    {% else %}
+        —
+    {% endif %}
+</td>
 
-                <!-- external link if exists -->
-                <td>
-                    {% if p['external_link'] %}
-                        <a href="{{ p['external_link'] }}" target="_blank">🔗 Link</a>
-                    {% else %}
-                        —
-                    {% endif %}
-                </td>
+<!-- Synopsis -->
+<td>
+    {% if p['synopsis_path'] %}
+        <a href="{{ url_for('serve_upload', relpath=p['synopsis_path'].replace('uploads/', '')) }}" 
+           target="_blank" rel="noopener">📄 View</a>
+    {% else %}
+        —
+    {% endif %}
+</td>
 
-                <!-- created by (compact) -->
-                <td>
-                    <strong>{{ p['created_by_name'] }}</strong><br>
-                    <small>{{ p['created_by_roll'] }} | {{ p['created_by_branch'] }} - {{ p['created_by_batch'] }}</small>
-                </td>
+<!-- Report -->
+<td>
+    {% if p['report_path'] %}
+        <a href="{{ url_for('serve_upload', relpath=p['report_path'].replace('uploads/', '')) }}" 
+           target="_blank" rel="noopener">📑 View</a>
+    {% else %}
+        —
+    {% endif %}
+</td>
 
-                <!-- action buttons -->
-                <td>
-                    <a href="{{ url_for('admin_edit_problem', problem_id=p['id']) }}" class="btn-3d">✏️ Edit</a>
-                    <a href="{{ url_for('admin_delete_problem', problem_id=p['id']) }}" class="btn-3d danger"
-                       onclick="return confirm('❗ Are you sure you want to delete this problem?')">🗑 Delete</a>
-                </td>
-            </tr>
+<!-- Certificate -->
+<td>
+    {% if p['certificate_path'] %}
+        <a href="{{ url_for('serve_upload', relpath=p['certificate_path'].replace('uploads/', '')) }}" 
+           target="_blank" rel="noopener">🎓 View</a>
+    {% else %}
+        —
+    {% endif %}
+</td>
+
+<!-- Created By -->
+<td>
+    <strong>{{ p['created_by_name'] }}</strong><br>
+    <small>{{ p['created_by_roll'] }} | {{ p['created_by_branch'] }} - {{ p['created_by_batch'] }}</small>
+</td>
+
+
+                    <!-- Status -->
+                    <td>
+                        {% if st == "approved" %}
+                            <span class="status approved">✔ Approved</span>
+                        {% elif st == "rejected" %}
+                            <span class="status rejected">❌ Rejected</span>
+                            {% if p['rejection_reason'] %}
+                                <br><small>{{ p['rejection_reason'] }}</small>
+                            {% endif %}
+                        {% else %}
+                            <span class="status pending">⏳ Pending</span>
+                        {% endif %}
+                    </td>
+
+                    <!-- Actions -->
+                    <td>
+                        <div class="action-buttons">
+                            <a href="{{ url_for('admin_edit_problem', problem_id=p['id']) }}" class="btn-action edit">✏️ Edit</a>
+                            <a href="{{ url_for('admin_delete_problem', problem_id=p['id']) }}"
+                               class="btn-action delete"
+                               onclick="return confirm('❗ Are you sure you want to delete this problem?')">🗑 Delete</a>
+
+                            {% if st == "pending" %}
+                                <a href="{{ url_for('admin_approve_problem', problem_id=p['id']) }}" class="btn-action approve">✔ Approve</a>
+                                <a href="{{ url_for('admin_reject_problem', problem_id=p['id']) }}" class="btn-action reject">❌ Reject</a>
+                            {% elif st == "approved" %}
+                                <a href="{{ url_for('admin_reject_problem', problem_id=p['id']) }}" class="btn-action reject">❌ Reject</a>
+                            {% elif st == "rejected" %}
+                                <a href="{{ url_for('admin_approve_problem', problem_id=p['id']) }}" class="btn-action approve">✔ Approve</a>
+                            {% endif %}
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
             {% else %}
-            <tr>
-                <td colspan="8" style="text-align:center; font-style:italic;">No problems found.</td>
-            </tr>
-            {% endfor %}
+                <tr>
+                    <td colspan="12" style="text-align:center; color:gray; padding:15px;">
+                        ⚠ No problems added yet.
+                    </td>
+                </tr>
+            {% endif %}
         </tbody>
     </table>
 </div>
+
+<!-- Extra CSS -->
+<style>
+    .badge {
+        color: white;
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-size: 12px;
+        display: inline-block;
+    }
+    .status {
+        font-weight: bold;
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 12px;
+        display: inline-block;
+    }
+    .status.approved { background: #e6ffed; color: #008000; }
+    .status.rejected { background: #ffe6e6; color: #d32f2f; }
+    .status.pending { background: #fff3cd; color: #856404; }
+
+    .action-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+    .btn-action {
+        padding: 4px 10px;
+        border-radius: 6px;
+        text-decoration: none;
+        font-size: 13px;
+        transition: 0.2s;
+    }
+    .btn-action.edit { background:#2196f3; color:white; }
+    .btn-action.edit:hover { background:#1976d2; }
+    .btn-action.delete { background:#f44336; color:white; }
+    .btn-action.delete:hover { background:#c62828; }
+    .btn-action.approve { background:#4caf50; color:white; }
+    .btn-action.approve:hover { background:#2e7d32; }
+    .btn-action.reject { background:#ff9800; color:white; }
+    .btn-action.reject:hover { background:#e65100; }
+</style>
 {% endblock %}

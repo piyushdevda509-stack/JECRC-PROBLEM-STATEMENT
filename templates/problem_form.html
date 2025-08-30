@@ -18,7 +18,13 @@
         <input type="text" name="category" value="{{ problem['category'] if problem else '' }}" required><br><br>
 
         <label>Branch:</label>
-        <input type="text" name="branch" value="{{ problem['branch'] if problem else '' }}" required><br><br>
+         <select name="branch" required>
+         <option value="CSE" {% if problem.branch=='CSE' %}selected{% endif %}>CSE</option>
+         <option value="IT" {% if problem.branch=='IT' %}selected{% endif %}>IT</option>
+         <option value="ECE" {% if problem.branch=='ECE' %}selected{% endif %}>ECE</option>
+         <option value="EEE" {% if problem.branch=='EEE' %}selected{% endif %}>EEE</option>
+         <option value="ME" {% if problem.branch=='ME' %}selected{% endif %}>ME</option>
+        </select>
 
         <label>External Link:</label>
         <input type="url" name="external_link" value="{{ problem['external_link'] if problem else '' }}" required><br><br>

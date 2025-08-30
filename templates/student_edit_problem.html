@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="dashboard-box">
+    <h2>✏ Edit Problem</h2>
+
+    <form method="POST" enctype="multipart/form-data" class="form-container">
+        <label>Title</label>
+        <input type="text" name="title" value="{{ problem['title'] }}" required />
+
+        <label>Description</label>
+        <textarea name="description" rows="5" required>{{ problem['description'] }}</textarea>
+
+        <label>Skill</label>
+        <select name="skill" required>
+            <option value="AI" {% if problem['skill']=="AI" %}selected{% endif %}>AI</option>
+            <option value="ML" {% if problem['skill']=="ML" %}selected{% endif %}>ML</option>
+            <option value="IoT" {% if problem['skill']=="IoT" %}selected{% endif %}>IoT</option>
+            <option value="Python" {% if problem['skill']=="Python" %}selected{% endif %}>Python</option>
+            <option value="Web" {% if problem['skill']=="Web" %}selected{% endif %}>Web</option>
+        </select>
+
+        <label>Category</label>
+        <select name="category" required>
+            <option value="Research" {% if problem['category']=="Research" %}selected{% endif %}>Research</option>
+            <option value="Development" {% if problem['category']=="Development" %}selected{% endif %}>Development</option>
+            <option value="Case Study" {% if problem['category']=="Case Study" %}selected{% endif %}>Case Study</option>
+        </select>
+
+        <label>Branch</label>
+        <select name="branch" required>
+            <option value="CSE" {% if problem['branch']=="CSE" %}selected{% endif %}>CSE</option>
+            <option value="IT" {% if problem['branch']=="IT" %}selected{% endif %}>IT</option>
+            <option value="ECE" {% if problem['branch']=="ECE" %}selected{% endif %}>ECE</option>
+            <option value="EEE" {% if problem['branch']=="EEE" %}selected{% endif %}>EEE</option>
+            <option value="ME" {% if problem['branch']=="ME" %}selected{% endif %}>ME</option>
+        </select>
+
+        <!-- ✅ Problem Link Section -->
+<div class="form-group">
+    <label>Do you have link of this Problem Statement?</label>
+    <div class="toggle-buttons">
+        <input type="radio" id="link_yes" name="has_link" value="yes" onclick="toggleLink(true)">
+        <label for="link_yes" class="btn-toggle">Yes</label>
+
+        <input type="radio" id="link_no" name="has_link" value="no" checked onclick="toggleLink(false)">
+        <label for="link_no" class="btn-toggle">No</label>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="external_link">External Link:</label>
+    <input type="url" name="external_link" id="external_link" 
+           value="https://jecrcfoundation.com/" readonly>
+</div>
+<!-- Synopsis -->
+<label>Synopsis (PDF)</label>
+{% if problem['synopsis_path'] %}
+    <p>
+        <a href="{{ url_for('serve_upload', relpath=problem['synopsis_path'].replace('uploads/', '')) }}" 
+           target="_blank" class="btn-view">📄 View</a>
+    </p>
+{% endif %}
+<input type="file" name="synopsis" accept=".pdf" />
+
+<!-- Certificate -->
+<label>Certificate (Image/PDF)</label>
+{% if problem['certificate_path'] %}
+    <p>
+        <a href="{{ url_for('serve_upload', relpath=problem['certificate_path'].replace('uploads/', '')) }}" 
+           target="_blank" class="btn-view">📄 View</a>
+    </p>
+{% endif %}
+<input type="file" name="certificate" accept=".pdf,.jpg,.jpeg,.png" />
+
+<!-- Report -->
+<label>Report (PDF)</label>
+{% if problem['report_path'] %}
+    <p>
+        <a href="{{ url_for('serve_upload', relpath=problem['report_path'].replace('uploads/', '')) }}" 
+           target="_blank" class="btn-view">📄 View</a>
+    </p>
+{% endif %}
+<input type="file" name="report" accept=".pdf" />
+
+
+        <button type="submit" class="btn-submit">💾 Update & Resubmit</button>
+    </form>
+</div>
+
+
+<style>
+    .form-container {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 20px;
+    }
+    .form-container input,
+    .form-container select,
+    .form-container textarea {
+        padding: 10px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+    }
+    .btn-submit {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 6px;
+        font-size: 14px;
+        cursor: pointer;
+    }
+    .btn-submit:hover {
+        background: #0056b3;
+    }
+    .toggle-buttons {
+  display: flex;
+  gap: 15px;
+  margin-top: 8px;
+}
+
+.toggle-buttons input[type="radio"] {
+  display: none; /* hide default radio */
+}
+
+.toggle-buttons label {
+  padding: 8px 20px;
+  border: 2px solid #007bff;
+  border-radius: 25px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: #007bff;
+  background: #fff;
+  transition: all 0.3s ease;
+}
+
+.toggle-buttons input[type="radio"]:checked + label {
+  background: #007bff;
+  color: #fff;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+}
+</style>
+<script>
+function toggleLink(enable) {
+  const linkInput = document.getElementById("external_link");
+  if (enable) {
+    linkInput.removeAttribute("readonly");
+    linkInput.value = ""; // clear for new input
+  } else {
+    linkInput.setAttribute("readonly", true);
+    linkInput.value = "https://jecrcfoundation.com/";
+  }
+}
+</script>
+{% endblock %}
