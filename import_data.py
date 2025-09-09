@@ -1,24 +1,26 @@
-import sqlite3
-import csv
-from werkzeug.security import generate_password_hash
 import os
+import csv
+import psycopg2
+from psycopg2.extras import RealDictCursor
+from werkzeug.security import generate_password_hash
 
-DB_PATH = "instance/problem_solver.db"
+DATABASE_URL = os.getenv("DATABASE_URL")
+if not DATABASE_URL:
+    raise Exception("❌ DATABASE_URL not set.")
 
-if not os.path.exists(DB_PATH):
-    raise FileNotFoundError("❌ Database not found. Run init_db.py first.")
-
-conn = sqlite3.connect(DB_PATH)
+conn = psycopg2.connect(DATABASE_URL, cursor_factory=RealDictCursor)
 cur = conn.cursor()
 
 # -------------------------------
 # 1️⃣ Insert default test user
 # -------------------------------
 hashed_password = generate_password_hash("01012000")
-cur.execute("""
-INSERT OR IGNORE INTO users (name, roll_no, password)
-VALUES (?, ?, ?)
-""", ("Test Student", "101", hashed_password))
+cur.execute("SELECT * FROM students WHERE roll_no = %s", ("101",))
+if not cur.fetchone():
+    cur.execute("""
+        INSERT INTO students (roll_no, name, password)
+        VALUES (%s, %s, %s)
+    """, ("101", "Test Student", hashed_password))
 
 # -------------------------------
 # 2️⃣ Load problems from CSV
@@ -30,8 +32,9 @@ with open("problems.csv", "r", encoding="utf-8") as f:
     reader = csv.DictReader(f)
     for row in reader:
         cur.execute("""
-        INSERT OR IGNORE INTO problems (title, description, skill, category, branch, external_link)
-        VALUES (?, ?, ?, ?, ?, ?)
+            INSERT INTO problems (title, description, skill, category, branch, external_link)
+            VALUES (%s, %s, %s, %s, %s, %s)
+            ON CONFLICT DO NOTHING
         """, (
             row.get("title", ""),
             row.get("description", ""),
@@ -42,6 +45,7 @@ with open("problems.csv", "r", encoding="utf-8") as f:
         ))
 
 conn.commit()
+cur.close()
 conn.close()
 
-print("✅ Data imported successfully! Test user created: Roll No = 101, Password = 01012000")
+print("✅ Data imported successfully! Test student created: Roll No = 101, Password = 01012000")

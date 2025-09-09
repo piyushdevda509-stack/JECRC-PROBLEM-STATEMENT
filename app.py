@@ -2,7 +2,8 @@
 import os
 import csv
 import datetime as dt
-import sqlite3
+import db_compat as sqlite3
+import psycopg2
 from pathlib import Path
 from werkzeug.utils import secure_filename
 from flask import (
@@ -13,6 +14,9 @@ from werkzeug.security import generate_password_hash
 import smtplib,random
 from email.mime.text import MIMEText
 from email.utils import formataddr
+import sys
+import db_compat
+sys.modules['sqlite3'] = db_compat
 # -----------------------------------------------------------------------------
 # Paths & Flask Config
 # -----------------------------------------------------------------------------
@@ -1114,6 +1118,7 @@ def admin_edit_student(roll_no):
         'branch': student[2],
         'batch': student[3],
         'dob': student[4],
+        
         'email': student[5],
         'password': student[6],
     }
@@ -1175,7 +1180,34 @@ def export_problems_to_csv():
                 r["branch"], r["external_link"], r["created_by_name"], r["created_by_roll"],
                 r["created_by_branch"], r["created_by_batch"], r["status"]
             ])
+# ...existing code...
 
+def get_db_connection():
+    """
+    Connects to PostgreSQL if a DATABASE_URL environment variable is set,
+    otherwise connects to the local SQLite database.
+    """
+    db_url = os.environ.get('DATABASE_URL')
+    
+    if db_url:
+        # Connect to PostgreSQL using the URL provided by Render
+        try:
+            conn = psycopg2.connect(db_url)
+            return conn
+        except Exception as e:
+            print(f"Error connecting to PostgreSQL: {e}")
+            return None
+    else:
+        # Connect to the local SQLite database for development
+        try:
+            conn = sqlite3.connect('instance/merged_solver.db')
+            conn.row_factory = sqlite3.Row 
+            return conn
+        except Exception as e:
+            print(f"Error connecting to SQLite: {e}")
+            return None
+
+# ...existing code...
 # -----------------------------------------------------------------------------
 # Run
 # -----------------------------------------------------------------------------
