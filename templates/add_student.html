@@ -25,6 +25,9 @@
             <label for="email">Email</label> 
             <input type="email" id="email" name="email" required placeholder="Enter student email" required style="text-transform: lowercase;">
 
+            <label>Mobile Number:</label>
+            <input type="text" name="mobile" required placeholder="Enter student mobile number">    
+            
             <label>Password:</label>
             <div style="position: relative;">
                 <input type="password" name="password" id="password" required style="padding-right: 40px;">
@@ -50,6 +53,9 @@
                 <th>Branch</th>
                 <th>Batch</th>
                 <th>DOB</th>
+                <th>Email</th>
+                <th>Mobile</th>
+                <th>Password</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -77,6 +83,9 @@
 
                 <td>{{ s['batch'] }}</td>
                 <td>{{ s['dob'] }}</td>
+                <td>{{ s['email'] }}</td>
+                <td>{{ s['mobile'] }}</td>
+                <td>{{ s['password'] }}</td>
 
                 <!-- Actions -->
                 <td>

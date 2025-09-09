@@ -1,15 +1,30 @@
 import os
+import csv
 import psycopg2
 from psycopg2.extras import RealDictCursor
+from dotenv import load_dotenv
+load_dotenv()
 
-DATABASE_URL = os.getenv("DATABASE_URL", "your_render_postgres_url_here")
+# -----------------------
+# Database Connection
+# -----------------------
+DATABASE_URL = os.getenv("DATABASE_URL")  # from Render
+if not DATABASE_URL:
+    raise Exception("❌ DATABASE_URL not set. Add it in Render Environment.")
 
-conn = psycopg2.connect(DATABASE_URL, cursor_factory=RealDictCursor, sslmode="require")
+conn = psycopg2.connect(DATABASE_URL, cursor_factory=RealDictCursor)
 cur = conn.cursor()
 
-# -------------------------
-# Students Table
-# -------------------------
+# Add this after creating the students table (for PostgreSQL)
+try:
+    cur.execute("ALTER TABLE students ADD COLUMN mobile TEXT;")
+    conn.commit()
+except Exception:
+    conn.rollback()  # Ignore if already exists
+
+# -----------------------
+# Create Students Table
+# -----------------------
 cur.execute("""
 CREATE TABLE IF NOT EXISTS students (
     roll_no TEXT PRIMARY KEY,
@@ -18,18 +33,41 @@ CREATE TABLE IF NOT EXISTS students (
     batch TEXT,
     dob TEXT,
     email TEXT UNIQUE,
+    mobile TEXT,
     password TEXT,
-    password_changed BOOLEAN DEFAULT FALSE
-);
+    password_changed INTEGER DEFAULT 0
+)
 """)
 
-# -------------------------
-# Problems Table
-# -------------------------
+# Insert default student if not exists
+cur.execute("SELECT * FROM students WHERE roll_no = %s", ("24EJCAD102",))
+if not cur.fetchone():
+    cur.execute("""
+    INSERT INTO students (roll_no, name, branch, batch, dob, email, mobile, password, password_changed)
+    VALUES (%s,%s,%s,%s,%s,%s,%s,%s)
+""", ("24EJCAD102", "Default Student", "AIDS", "2028", "10092006",
+      "piyushdevda.ai28@jecrc.ac.in", "9660234669", "10092006", 0))
+
+# -----------------------
+# Create Admin Table
+# -----------------------
+cur.execute("""
+CREATE TABLE IF NOT EXISTS admin (
+    id TEXT PRIMARY KEY,
+    password TEXT NOT NULL
+)
+""")
+cur.execute("SELECT * FROM admin WHERE id = %s", ("24EJCAD102",))
+if not cur.fetchone():
+    cur.execute("INSERT INTO admin (id, password) VALUES (%s, %s)", ("24EJCAD102", "@Piyush1912"))
+
+# -----------------------
+# Create Problems Table
+# -----------------------
 cur.execute("""
 CREATE TABLE IF NOT EXISTS problems (
     id SERIAL PRIMARY KEY,
-    title TEXT NOT NULL,
+    title TEXT,
     description TEXT,
     skill TEXT,
     category TEXT,
@@ -42,29 +80,32 @@ CREATE TABLE IF NOT EXISTS problems (
     synopsis_path TEXT,
     certificate_path TEXT,
     report_path TEXT,
-    status TEXT DEFAULT 'Pending',
+    status TEXT DEFAULT 'pending',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     rejection_reason TEXT,
     student_id TEXT
-);
+)
 """)
 
-# Add unique constraint on (title, student_id)
-cur.execute("""
-DO $$
-BEGIN
-    IF NOT EXISTS (
-        SELECT 1
-        FROM pg_constraint
-        WHERE conname = 'problems_title_student_key'
-    ) THEN
-        ALTER TABLE problems
-        ADD CONSTRAINT problems_title_student_key UNIQUE (title, student_id);
-    END IF;
-END$$;
-""")
+# Import Problems from CSV if available
+if os.path.exists("problems.csv"):
+    with open("problems.csv", newline='', encoding="utf-8") as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            cur.execute("""
+                INSERT INTO problems (
+                    title, description, skill, category, branch, external_link,
+                    created_by_name, created_by_roll, created_by_branch, created_by_batch, status
+                ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)
+                ON CONFLICT DO NOTHING
+            """, (
+                row["title"], row["description"], row["skill"], row["category"], row["branch"],
+                row.get("external_link"), row["created_by_name"], row["created_by_roll"],
+                row["created_by_branch"], row["created_by_batch"], "Pending"
+            ))
 
 conn.commit()
 cur.close()
 conn.close()
+
 print("✅ PostgreSQL Database initialized successfully!")

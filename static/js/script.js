@@ -1,19 +1,28 @@
-// Wait until DOM is ready
 document.addEventListener("DOMContentLoaded", () => {
+    const hamburger = document.getElementById("hamburger");
+    const headerNav = document.querySelector(".header-nav");
+    const overlay = document.getElementById("sidebar-overlay");
 
-    // === Flash message auto-hide ===
-    const flashMessages = document.querySelectorAll('.flash');
-    if (flashMessages.length) {
-        setTimeout(() => {
-            flashMessages.forEach(flash => {
-                flash.style.transition = "opacity 0.8s";
-                flash.style.opacity = "0";
-                setTimeout(() => flash.remove(), 800);
-            });
-        }, 4000); // auto hide after 4s
+    function toggleSidebar() {
+        headerNav.classList.toggle("active");
+        overlay.classList.toggle("active");
+        hamburger.classList.toggle("active"); // animate hamburger
     }
 
-    // === Problem Search & Filters ===
+    hamburger?.addEventListener("click", toggleSidebar);
+    overlay?.addEventListener("click", toggleSidebar);
+
+    // Flash messages auto-hide
+    const flashMessages = document.querySelectorAll('.flash');
+    flashMessages.forEach(flash => {
+        setTimeout(() => {
+            flash.style.transition = "opacity 0.8s";
+            flash.style.opacity = "0";
+            setTimeout(() => flash.remove(), 800);
+        }, 4000);
+    });
+
+    // Filters
     const searchBox = document.getElementById("searchBox");
     const branchFilter = document.getElementById("branchFilter");
     const skillFilter = document.getElementById("skillFilter");
@@ -25,10 +34,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const skillValue = skillFilter?.value || "all";
 
         problems.forEach(card => {
-            const title = card.dataset.title.toLowerCase();
-            const desc = card.dataset.description.toLowerCase();
-            const branch = card.dataset.branch;
-            const skill = card.dataset.skill;
+            const title = card.dataset.title?.toLowerCase() || "";
+            const desc = card.dataset.description?.toLowerCase() || "";
+            const branch = card.dataset.branch || "";
+            const skill = card.dataset.skill || "";
 
             const matchesSearch = title.includes(searchText) || desc.includes(searchText);
             const matchesBranch = branchValue === "all" || branch === branchValue;
@@ -38,9 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Event listeners
     searchBox?.addEventListener("input", filterProblems);
     branchFilter?.addEventListener("change", filterProblems);
     skillFilter?.addEventListener("change", filterProblems);
-
 });

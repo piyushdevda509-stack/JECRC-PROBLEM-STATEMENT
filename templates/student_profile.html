@@ -1,0 +1,16 @@
+<!-- filepath: c:\Users\HP5CD\Desktop\jecrc_problem_solver\templates\student_profile.html -->
+{% extends "base.html" %}
+{% block content %}
+<div class="dashboard-box">
+    <h2>👤 My Profile</h2>
+    <table class="styled-table">
+        <tr><th>Name</th><td>{{ student['name'] }}</td></tr>
+        <tr><th>Roll No</th><td>{{ student['roll_no'] }}</td></tr>
+        <tr><th>Branch</th><td>{{ student['branch'] }}</td></tr>
+        <tr><th>Batch</th><td>{{ student['batch'] }}</td></tr>
+        <tr><th>DOB</th><td>{{ student['dob'] }}</td></tr>
+        <tr><th>Email</th><td>{{ student['email'] }}</td></tr>
+        <tr><th>Mobile</th><td>{{ student['mobile'] }}</td></tr>
+    </table>
+</div>
+{% endblock %}

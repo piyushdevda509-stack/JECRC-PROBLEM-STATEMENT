@@ -338,6 +338,17 @@ def problem_detail(problem_id):
         abort(404)
     return render_template("problem_detail.html", problem=problem)
 
+@app.route("/student/profile")
+def student_profile():
+    if not require_student():
+        return redirect(url_for("login"))
+    conn = get_db()
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM students WHERE roll_no=?", (session["user"],))
+    student = cur.fetchone()
+    conn.close()
+    return render_template("student_profile.html", student=student)
+
 
 # -----------------------------------------------------------------------------
 # Student: add / my problems
@@ -421,9 +432,12 @@ def student_add_problem():
         conn.commit()
 
         # new id
-        cur.execute("SELECT last_insert_rowid() AS id")
-        pid = cur.fetchone()["id"]
-        subdir = f"problem_{pid}"
+        pid = cur.lastrowid  # For SQLite
+# For PostgreSQL, use RETURNING id in the INSERT statement
+        if pid is None:
+            cur.execute("SELECT id FROM problems WHERE title=?", (title,))
+            pid = cur.fetchone()["id"]
+            subdir = f"problem_{pid}"
 
         syn_path = cert_path = rep_path = None
 
@@ -525,29 +539,22 @@ def student_edit_problem(pid):
         report_path = problem["report_path"]
 
         subdir = f"problem_{pid}"
-        os.makedirs(os.path.join(UPLOAD_FOLDER, subdir), exist_ok=True)
 
         if synopsis_file and synopsis_file.filename:
             if allowed_file(synopsis_file.filename, "doc"):
-                filename = secure_filename(synopsis_file.filename)
-                synopsis_path = f"uploads/{subdir}/{filename}"
-                synopsis_file.save(os.path.join("static", synopsis_path))
+                synopsis_path = save_upload(synopsis_file, subdir)
             else:
                 flash("Synopsis must be a PDF.", "danger")
 
         if certificate_file and certificate_file.filename:
             if allowed_file(certificate_file.filename, "img"):
-                filename = secure_filename(certificate_file.filename)
-                certificate_path = f"uploads/{subdir}/{filename}"
-                certificate_file.save(os.path.join("static", certificate_path))
+                certificate_path = save_upload(certificate_file, subdir)
             else:
                 flash("Certificate must be an image/PDF.", "danger")
 
         if report_file and report_file.filename:
             if allowed_file(report_file.filename, "doc"):
-                filename = secure_filename(report_file.filename)
-                report_path = f"uploads/{subdir}/{filename}"
-                report_file.save(os.path.join("static", report_path))
+                report_path = save_upload(report_file, subdir)
             else:
                 flash("Report must be a PDF.", "danger")
 
@@ -1061,12 +1068,13 @@ def admin_add_student():
         batch = request.form["batch"]
         dob = request.form["dob"]
         email = request.form["email"].strip().lower()
+        mobile = request.form.get("mobile", "").strip()
         password = request.form["password"]
         try:
             cur.execute("""
-                INSERT INTO students (roll_no, name, branch, batch, dob, email, password)
-                VALUES (?, ?, ?, ?, ?, ?, ?)
-            """, (roll_no, name, branch, batch, dob, email, password))
+                INSERT INTO students (roll_no, name, branch, batch, dob, email, mobile, password)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            """, (roll_no, name, branch, batch, dob, email, mobile, password))
             conn.commit()
             flash("✅ Student added successfully!", "success")
         except sqlite3.IntegrityError:
@@ -1094,11 +1102,12 @@ def admin_edit_student(roll_no):
         batch = request.form.get("batch").strip()
         dob = request.form.get("dob").strip()
         email = request.form.get("email").strip()  # Retrieve the email from the form
+        mobile = request.form.get("mobile", "").strip()
         password = request.form.get("password").strip()
 
         # This is the corrected UPDATE statement that includes the email field.
-        cur.execute("UPDATE students SET name=?, branch=?, batch=?, dob=?, email=?, password=? WHERE roll_no=?",
-                    (name, branch, batch, dob, email, password, roll_no))
+        cur.execute("UPDATE students SET name=?, branch=?, batch=?, dob=?, email=?, mobile=?, password=? WHERE roll_no=?",
+                    (name, branch, batch, dob, email, mobile, password, roll_no))
         conn.commit()
         conn.close()
         flash("✅ Student updated successfully!", "success")
@@ -1120,7 +1129,8 @@ def admin_edit_student(roll_no):
         'dob': student[4],
         
         'email': student[5],
-        'password': student[6],
+        'mobile': student[6],
+        'password': student[7],
     }
 
     return render_template("admin_edit_student.html", student=student_dict)
